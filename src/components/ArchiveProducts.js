@@ -1,7 +1,7 @@
 import { Button } from "react-bootstrap";
 import { Notyf } from 'notyf';
 
-export default function ArchiveCourse({ courseId, isActive, fetchData }) {
+export default function ArchiveProduct({ productId, isActive, fetchData }) {
   const notyf = new Notyf();
 
   const archiveToggle = () => {
