@@ -87,7 +87,7 @@ const Login = () => {
 
   return (
     user.id !== null ?
-    <Navigate to="/courses" />
+    <Navigate to="/products" />
     :
     <Container className="mt-5">
       <h1 className="text-center mb-4" style={{ color: '#2C3E50' }}>Log In</h1>

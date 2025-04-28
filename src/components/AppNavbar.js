@@ -34,11 +34,11 @@ export default function AppNavbar() {
         
         <Nav className="me-auto">
           {user && user.isAdmin ? (
-            <Nav.Link as={NavLink} to="/courses" style={linkStyle}>
+            <Nav.Link as={NavLink} to="/products" style={linkStyle}>
               Admin Dashboard
             </Nav.Link>
           ) : (
-            <Nav.Link as={NavLink} to="/courses" style={linkStyle}>
+            <Nav.Link as={NavLink} to="/products" style={linkStyle}>
               Products
             </Nav.Link>
           )}
