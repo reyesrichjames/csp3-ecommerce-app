@@ -30,38 +30,48 @@ export default function UserView({ productsData = [] }) {
 
   const handleSearchByName = async () => {
     try {
-      const response = await fetch('https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/products/search', {
+      const response = await fetch('https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/products/search-by-name/', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ name: productName })
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
-      setProducts(data);
+      setProducts(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error searching products:', error);
+      setProducts([]); // Reset to empty array on error
     }
   };
 
   const handleSearchByPrice = async () => {
     try {
-      const response = await fetch('https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/products/searchByPrice', {
+      const response = await fetch('https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/products/search-by-price/', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ 
           minPrice: parseFloat(minPrice) || 0,
           maxPrice: parseFloat(maxPrice) || Number.MAX_SAFE_INTEGER
         })
       });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const data = await response.json();
-      setProducts(data);
+      setProducts(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error searching by price:', error);
+      setProducts([]); // Reset to empty array on error
     }
   };
 

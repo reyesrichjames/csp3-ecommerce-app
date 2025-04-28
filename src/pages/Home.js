@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Banner from '../components/Banner';
-import FeaturedCourses from '../components/FeaturedCourses';
+import FeaturedProducts from '../components/FeaturedProducts';
 
 export default function Home() {
   const data = {
@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <>
       <Banner data={data} />
-      <FeaturedCourses />
+      <FeaturedProducts />
       
     </>
   );

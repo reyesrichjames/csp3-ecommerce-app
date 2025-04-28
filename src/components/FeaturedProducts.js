@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Row, Container } from 'react-bootstrap';
-import PreviewCourses from './PreviewCourses';
+import PreviewProducts from './PreviewProducts';
 
-export default function FeaturedCourses() {
+export default function FeaturedProducts() {
   const [previews, setPreviews] = useState([]);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function FeaturedCourses() {
       <h2 className="text-center mb-5">Featured Products</h2>
       <Row>
         {previews.slice(0, 3).map(product => (
-          <PreviewCourses 
+          <PreviewProducts 
             data={product} 
             key={product.key} 
             breakPoint={4}
@@ -42,7 +42,7 @@ export default function FeaturedCourses() {
       </Row>
       <Row className="mt-4">
         {previews.slice(3, 6).map(product => (
-          <PreviewCourses 
+          <PreviewProducts
             data={product} 
             key={product.key} 
             breakPoint={4}

@@ -8,13 +8,11 @@ import AppNavbar from './components/AppNavbar';
 import Home from './pages/Home';
 import Products from './pages/Products';
 import Register from './pages/Register';
-import News from './pages/News';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
 import Error from './pages/Error';
 import Profile from './pages/Profile';
 import ProductView from './pages/ProductView';
-import AddCourse from './pages/AddCourse'
 
 import { UserProvider } from './context/UserContext';
 import 'notyf/notyf.min.css';
@@ -71,13 +69,11 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/products" element={<Products />} />
-            <Route path="/news" element={<News />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/products/:productId" element={<ProductView />} />
-            <Route path="/addCourse" element={<AddCourse />} />
             <Route path="*" element={<Error />} />
           </Routes>
         </Container>

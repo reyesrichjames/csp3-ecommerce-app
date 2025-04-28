@@ -1,13 +1,16 @@
 import { Col, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-export default function PreviewCourses(props) {
+export default function PreviewProducts(props) {
   const { breakPoint, data } = props;
   const { _id, name, description, price } = data;
 
   return (
     <Col xs={12} md={breakPoint}>
-      <Card className="h-100 d-flex flex-column mx-3" style={{ border: '1px solid #dee2e6' }}>
+      <Card className="h-100 d-flex flex-column mx-3" style={{ 
+        border: '1px solid #dee2e6',
+        minHeight: '350px' // Reduced from 400px
+      }}>
         <Card.Body className="flex-grow-1">
           <Card.Title>
             <Link 
@@ -23,7 +26,7 @@ export default function PreviewCourses(props) {
             </Link>
           </Card.Title>
           <Card.Text style={{ 
-            maxHeight: '150px', 
+            maxHeight: '200px', // Reduced from 250px
             overflowY: 'auto',
             fontSize: '0.9rem',
             color: '#6c757d'
