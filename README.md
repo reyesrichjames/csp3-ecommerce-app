@@ -3,6 +3,7 @@ Register - Reyes
 Userview product = Reyes
 userview details = Reyes
 AdminDashboard - Reyes
+Profile page with reset password - reyes
 
 # Getting Started with Create React App
 
