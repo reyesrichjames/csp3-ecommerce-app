@@ -11,8 +11,8 @@ export default function Courses() {
   const fetchData = () => {
 
     const fetchUrl = user.isAdmin
-      ? 'http://localhost:4000/courses/all'
-      : 'http://localhost:4000/courses'
+      ? 'https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/products/all'
+      : 'https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/products/active'
 
     fetch(fetchUrl, {
       headers: {

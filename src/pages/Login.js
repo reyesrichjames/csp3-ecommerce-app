@@ -67,7 +67,7 @@ const Login = () => {
   };
 
   function retrieveUserDetails(token) {
-    fetch('http://localhost:4000/users/details', {
+    fetch('https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/users/details', {
       headers: {
         Authorization: `Bearer ${token}`
       }

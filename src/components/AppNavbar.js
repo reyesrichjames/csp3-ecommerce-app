@@ -10,36 +10,68 @@ export default function AppNavbar() {
     localStorage.removeItem('token');
     setUser({
       id: null,
-      isAdmin: false // Ensure isAdmin is a boolean
+      isAdmin: false
     });
   };
 
+  const navbarStyle = {
+    backgroundColor: '#2C3E50',
+    padding: '0.5rem 1rem',
+  };
+
+  const linkStyle = {
+    color: '#ffffff',
+    textDecoration: 'none',
+    padding: '0.5rem 1rem',
+  };
+
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
-      <Container>
-        <Navbar.Brand as={NavLink} to="/">Zuitt Booking</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link as={NavLink} to="/" exact="true">Home</Nav.Link>
-            <Nav.Link as={NavLink} to="/courses" exact="true">Courses</Nav.Link>
-            <Nav.Link as={NavLink} to="/news" exact="true">News</Nav.Link> {/* Added News link */}
-            {user && user.isAdmin && (
-              <Nav.Link as={NavLink} to="/addCourse" exact="true">Add Course</Nav.Link>
-            )}
-            {user && user.id !== null ? (
-              <>
-                <Nav.Link as={NavLink} to="/profile" exact="true">Profile</Nav.Link>
-                <Nav.Link as={NavLink} to="/logout" exact="true" onClick={handleLogout}>Logout</Nav.Link>
-              </>
-            ) : (
-              <>
-                <Nav.Link as={NavLink} to="/login" exact="true">Login</Nav.Link>
-                <Nav.Link as={NavLink} to="/register" exact="true">Register</Nav.Link>
-              </>
-            )}
-          </Nav>
-        </Navbar.Collapse>
+    <Navbar expand="lg" style={navbarStyle}>
+      <Container fluid>
+        <Navbar.Brand as={NavLink} to="/" style={linkStyle}>
+          The Zuitt Shop
+        </Navbar.Brand>
+        
+        <Nav className="me-auto">
+          {user && user.isAdmin ? (
+            <Nav.Link as={NavLink} to="/courses" style={linkStyle}>
+              Admin Dashboard
+            </Nav.Link>
+          ) : (
+            <Nav.Link as={NavLink} to="/courses" style={linkStyle}>
+              Products
+            </Nav.Link>
+          )}
+        </Nav>
+
+        <Nav>
+          {user && user.id !== null ? (
+            // Logged in user
+            <>
+              {!user.isAdmin && (
+                <>
+                  <Nav.Link as={NavLink} to="/cart" style={linkStyle}>Cart</Nav.Link>
+                  <Nav.Link as={NavLink} to="/orders" style={linkStyle}>Orders</Nav.Link>
+                  <Nav.Link as={NavLink} to="/profile" style={linkStyle}>Profile</Nav.Link>
+                </>
+              )}
+              <Nav.Link 
+                as={NavLink} 
+                to="/logout" 
+                onClick={handleLogout} 
+                style={linkStyle}
+              >
+                Log Out
+              </Nav.Link>
+            </>
+          ) : (
+            // Not logged in
+            <>
+              <Nav.Link as={NavLink} to="/login" style={linkStyle}>Log In</Nav.Link>
+              <Nav.Link as={NavLink} to="/register" style={linkStyle}>Register</Nav.Link>
+            </>
+          )}
+        </Nav>
       </Container>
     </Navbar>
   );
