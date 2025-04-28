@@ -2,19 +2,19 @@ import { useState, useEffect } from 'react';
 import { Container, Button } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
-export default function CourseView() {
-  const { courseId } = useParams();
+export default function ProductView() {
+  const { productId } = useParams();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
-    fetch(`https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/products/${courseId}`)
+    fetch(`https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/products/${productId}`)
       .then(res => res.json())
       .then(data => {
         setProduct(data);
       })
       .catch(error => console.error('Error:', error));
-  }, [courseId]);
+  }, [productId]);
 
   const handleQuantityChange = (action) => {
     if (action === 'decrease' && quantity > 1) {

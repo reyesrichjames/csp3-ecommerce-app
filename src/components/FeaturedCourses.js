@@ -1,49 +1,54 @@
 import { useState, useEffect } from 'react';
-import { CardGroup } from 'react-bootstrap';
-
-import { Link } from 'react-router-dom';
+import { Row, Container } from 'react-bootstrap';
 import PreviewCourses from './PreviewCourses';
 
 export default function FeaturedCourses() {
+  const [previews, setPreviews] = useState([]);
 
-	const [previews, setPreviews] = useState([]);
+  useEffect(() => {
+    fetch('https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/products/active')
+      .then(res => res.json())
+      .then(data => {
+        // Create array of indices and shuffle it
+        const indices = Array.from({ length: data.length }, (_, i) => i);
+        for (let i = indices.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [indices[i], indices[j]] = [indices[j], indices[i]];
+        }
 
-	useEffect(() => {
+        // Take first 6 indices and create preview components
+        const featured = indices
+          .slice(0, 6)
+          .map(index => ({
+            ...data[index],
+            key: data[index]._id
+          }));
 
-		fetch('http://localhost:4000/courses')
-		.then(res => res.json())
-		.then(data => {
+        setPreviews(featured);
+      });
+  }, []);
 
-			const numbers = [];
-			const featured = [];
-
-			const generateRandomNumber = () => {
-				let randomNum = Math.floor(Math.random() * data.length)
-
-				if(numbers.indexOf(randomNum) === -1) {
-					numbers.push(randomNum)
-				} else {
-					generateRandomNumber()
-				}
-			}
-
-			for(let i=0; i < 3; i++) {
-				generateRandomNumber()
-
-				featured.push(<PreviewCourses data={data[numbers[i]]} key={data[numbers[i]]._id} breakPoint={4} />)
-			}
-
-			setPreviews(featured);
-		})
-	}, [])
-	return (
-		<>
-		<h2 className="text-center">Featured Courses</h2>
-		<CardGroup className="justify-content-center">
-		{previews}
-		</CardGroup>
-		</>
-
-
-		)
+  return (
+    <Container>
+      <h2 className="text-center mb-5">Featured Products</h2>
+      <Row>
+        {previews.slice(0, 3).map(product => (
+          <PreviewCourses 
+            data={product} 
+            key={product.key} 
+            breakPoint={4}
+          />
+        ))}
+      </Row>
+      <Row className="mt-4">
+        {previews.slice(3, 6).map(product => (
+          <PreviewCourses 
+            data={product} 
+            key={product.key} 
+            breakPoint={4}
+          />
+        ))}
+      </Row>
+    </Container>
+  );
 }

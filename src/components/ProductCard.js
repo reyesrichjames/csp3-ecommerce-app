@@ -10,7 +10,7 @@ export default function ProductCard({ productProp }) {
   const { _id, name, description, price } = productProp;
 
   return (
-    <Card id={_id} className="mb-3 h-100 d-flex flex-column">
+    <Card id={_id} className="mb-3 h-100 d-flex flex-column mx-3">
       <Card.Body className="flex-grow-1">
         <Card.Title>
           <Link 
@@ -34,7 +34,7 @@ export default function ProductCard({ productProp }) {
       <Card.Footer className="bg-light border-top text-start">
         <Link 
           className="btn btn-primary" 
-          to={`/courses/${_id}`}
+          to={`/products/${_id}`}
           style={{ borderRadius: 0 }}
         >
           Details

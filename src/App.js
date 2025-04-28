@@ -13,7 +13,7 @@ import Login from './pages/Login';
 import Logout from './pages/Logout';
 import Error from './pages/Error';
 import Profile from './pages/Profile';
-import CourseView from './pages/CourseView';
+import ProductView from './pages/ProductView';
 import AddCourse from './pages/AddCourse'
 
 import { UserProvider } from './context/UserContext';
@@ -76,7 +76,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/logout" element={<Logout />} />
-            <Route path="/courses/:courseId" element={<CourseView />} />
+            <Route path="/products/:productId" element={<ProductView />} />
             <Route path="/addCourse" element={<AddCourse />} />
             <Route path="*" element={<Error />} />
           </Routes>

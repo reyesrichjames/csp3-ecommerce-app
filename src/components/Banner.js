@@ -1,15 +1,25 @@
+import React, { useState } from 'react';
 import { Button, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 export default function Banner({ data }) {
+  const [shouldNavigate, setShouldNavigate] = useState(false);
+
+  if (shouldNavigate) {
+    return <Navigate to="/products" />;
+  }
+
   return (
     <Row className="my-5 text-center">
       <Col>
         <h1>{data.title}</h1>
-        <p>{data.content}</p>
-        <Link to={data.destination}>
-          <Button variant="primary">{data.buttonLabel}</Button>
-        </Link>
+        <p><em>{data.content}</em></p>
+        <Button 
+          variant="primary" 
+          onClick={() => setShouldNavigate(true)}
+        >
+          {data.buttonLabel}
+        </Button>
       </Col>
     </Row>
   );
