@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Form, Button, Container } from 'react-bootstrap';
-import { Navigate } from 'react-router-dom';
+import { Form, Button, Container, Card } from 'react-bootstrap';
+import { Navigate, Link } from 'react-router-dom';
 import UserContext from '../context/UserContext';
+import { Notyf } from 'notyf';
 
 const Login = () => {
-
   const { user, setUser } = useContext(UserContext);
-  // State for form inputs
+  const notyf = new Notyf();
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
-  // useEffect to enable the submit button when all fields are filled
   useEffect(() => {
     if (email && password) {
       setIsButtonDisabled(false);
@@ -20,9 +20,13 @@ const Login = () => {
     }
   }, [email, password]);
 
-  // Function to handle form submission
   const authenticate = (e) => {
     e.preventDefault();
+
+    if (!email.includes('@')) {
+      notyf.error('Invalid Email');
+      return;
+    }
 
     fetch('https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/users/login', {
       method: 'POST',
@@ -34,31 +38,31 @@ const Login = () => {
         password: password
       })
     })
-    .then(res => res.json())
+    .then(async response => {
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error);
+      }
+      return data;
+    })
     .then(data => {
-      if (data.access !== undefined) {
-        alert("Thank you for logging in.");
-        // console.log("Token:", data.access);
-
-        // Set the token in localStorage
+      if (data.access) {
+        notyf.success('Login successful');
         localStorage.setItem('token', data.access);
-
         retrieveUserDetails(data.access);
-
-        // Dispatch a custom event to notify other components
         window.dispatchEvent(new Event('tokenChange'));
-
-        // Reset input states to initial values
         setEmail('');
         setPassword('');
-      } else if (data.message === 'Incorrect email or password') {
-        alert('Incorrect email or password');
-      } else if (data.message === 'No email found') {
-        alert('Email does not exist');
       }
     })
     .catch(error => {
-      console.error('Error:', error);
+      if (error.message === "No Email found") {
+        notyf.error('Email does not exist');
+      } else if (error.message === "Email and password do not match") {
+        notyf.error('Incorrect email or password');
+      } else {
+        notyf.error('Login failed. Please try again.');
+      }
     });
   };
 
@@ -70,12 +74,15 @@ const Login = () => {
     })
     .then(res => res.json())
     .then(data => {
-
       setUser({
         id: data._id,
         isAdmin: data.isAdmin
-      })
+      });
     })
+    .catch(error => {
+      notyf.error('Failed to retrieve user details');
+      console.error('Error:', error);
+    });
   }
 
   return (
@@ -83,38 +90,55 @@ const Login = () => {
     <Navigate to="/courses" />
     :
     <Container className="mt-5">
-      <h1>Login</h1>
-      <Form onSubmit={authenticate}>
-        <Form.Group controlId="formEmail">
-          <Form.Label>Email:</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter Email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
-        </Form.Group>
+      <h1 className="text-center mb-4" style={{ color: '#2C3E50' }}>Log In</h1>
+      <div className="col-md-6 offset-md-3">
+        <Card className="border">
+          <Card.Body>
+            <Form onSubmit={authenticate}>
+              <Form.Group className="mb-3" controlId="formEmail">
+                <Form.Label>Email:</Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                />
+              </Form.Group>
 
-        <Form.Group controlId="formPassword">
-          <Form.Label>Password:</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Enter Password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-          />
-        </Form.Group>
+              <Form.Group className="mb-3" controlId="formPassword">
+                <Form.Label>Password:</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                />
+              </Form.Group>
 
-        {isButtonDisabled ? (
-          <Button variant="danger" type="submit" className="mt-3" id="submitBtn" disabled>
-            Login
-          </Button>
-        ) : (
-          <Button variant="primary" type="submit" className="mt-3" id="submitBtn">
-            Login
-          </Button>
-        )}
-      </Form>
+              <div className="bg-light mx-n3 p-3 mt-4" style={{ 
+                marginLeft: '-1rem', 
+                marginRight: '-1rem', 
+                marginBottom: '-1rem',
+                borderTop: '1px solid #dee2e6',
+                borderBottomLeftRadius: 'calc(0.375rem - 1px)',
+                borderBottomRightRadius: 'calc(0.375rem - 1px)'
+              }}>
+                <Button 
+                  variant="primary" 
+                  type="submit" 
+                  disabled={isButtonDisabled}
+                  style={{ width: 'auto' }}
+                >
+                  Submit
+                </Button>
+              </div>
+            </Form>
+          </Card.Body>
+        </Card>
+        <div className="text-center mt-3">
+          Don't have an account yet? <Link to="/register">Click here</Link> to register.
+        </div>
+      </div>
     </Container>
   );
 };
