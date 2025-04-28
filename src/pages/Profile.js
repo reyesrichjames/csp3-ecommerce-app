@@ -9,16 +9,23 @@ export default function Profile() {
   const { user } = useContext(UserContext);
   const [details, setDetails] = useState(null);
   const [showResetPassword, setShowResetPassword] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (user.id) {
+    const token = localStorage.getItem('token');
+    
+    if (token) {
       fetch('https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/users/details', {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${token}`
         }
       })
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) {
+            throw new Error('Failed to fetch user details');
+          }
+          return res.json();
+        })
         .then(data => {
           if (data) {
             setDetails({
@@ -31,14 +38,28 @@ export default function Profile() {
             alert('User not found.');
           }
         })
-        .catch(() => {
+        .catch((error) => {
+          console.error('Error fetching user details:', error);
           alert('Something went wrong, kindly contact us for assistance.');
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
+    } else {
+      setIsLoading(false);
     }
-  }, [user.id]);
+  }, []);  // Remove user.id dependency
 
-  if (user.id === null) {
-    return <Navigate to="/courses" />;
+  if (isLoading) {
+    return (
+      <Container className="mt-5 text-center">
+        <h3>Loading...</h3>
+      </Container>
+    );
+  }
+
+  if (!localStorage.getItem('token')) {
+    return <Navigate to="/products" />;
   }
 
   return (

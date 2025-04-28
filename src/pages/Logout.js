@@ -13,5 +13,5 @@ export default function Logout() {
   });
 
   // Directly navigate to the courses page
-  return <Navigate to="/courses" />;
+  return <Navigate to="/products" />;
 }
