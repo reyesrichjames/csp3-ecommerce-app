@@ -1,5 +1,7 @@
 Log In - Reyes
 Register - Reyes
+Userview product = Reyes
+userview details = Reyes
 
 
 # Getting Started with Create React App

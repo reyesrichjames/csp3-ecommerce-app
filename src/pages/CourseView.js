@@ -1,89 +1,99 @@
-import { useState, useEffect, useContext } from 'react';
-import { Container, Card, Button, Row, Col } from 'react-bootstrap';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Notyf } from 'notyf';
-import UserContext from '../context/UserContext'
+import { useState, useEffect } from 'react';
+import { Container, Button } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
 
 export default function CourseView() {
+  const { courseId } = useParams();
+  const [product, setProduct] = useState(null);
+  const [quantity, setQuantity] = useState(1);
 
-	const { user } = useContext(UserContext);
+  useEffect(() => {
+    fetch(`https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/products/${courseId}`)
+      .then(res => res.json())
+      .then(data => {
+        setProduct(data);
+      })
+      .catch(error => console.error('Error:', error));
+  }, [courseId]);
 
-	const notyf = new Notyf();
-	const navigate = useNavigate();
+  const handleQuantityChange = (action) => {
+    if (action === 'decrease' && quantity > 1) {
+      setQuantity(quantity - 1);
+    } else if (action === 'increase') {
+      setQuantity(quantity + 1);
+    }
+  };
 
-	const { courseId } = useParams();
+  const handleAddToCart = () => {
+    // Add to cart functionality can be implemented here
+    console.log('Adding to cart:', { product, quantity });
+  };
 
-	const [name, setName] = useState("");
-	const [description, setDescription] = useState("");
-	const [price, setPrice] = useState(0);
+  if (!product) {
+    return <Container>Loading...</Container>;
+  }
 
-	function enroll(courseId) {
-		fetch('http://localhost:4000/enrollments/enroll', {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${localStorage.getItem('token')}`
-			},
-			body: JSON.stringify({
-				userId: user.id,
-				enrolledCourses: [
-					{ courseId: courseId }
-				],
-				totalPrice: price
-			})
-		})
-		.then(res => res.json())
-		.then(data => {
-			if(data.message === 'Admin is forbidden') {
-				notyf.error("Admin Forbidden")
-			} else if(data.message === 'Enrolled successfully') {
+  return (
+    <Container className="mt-5">
+      <div className="card" style={{ borderRadius: '0' }}>
+        <div 
+          className="card-header text-center text-white py-3" 
+          style={{ backgroundColor: '#000', borderRadius: '0' }}
+        >
+          <h2 className="mb-0">{product.name}</h2>
+        </div>
+        <div className="card-body">
+          <p className="card-text">{product.description}</p>
+          
+          <div className="mt-3">
+            <div className="d-flex align-items-center mb-3">
+              <label className="me-3">Price: </label>
+              <span className="h5 mb-0" style={{ color: '#ff8c00' }}>₱{product.price}</span>
+            </div>
 
-				notyf.success('Enrollment successful');
-				navigate("/courses");
-			} else {
-				notyf.error('Internal Server Error. Notify system admin')
-			}
-		})
-	}
-
-	useEffect(() => {
-		fetch(`http://localhost:4000/courses/specific/${courseId}`)
-		.then(res => res.json())
-		.then(data => {
-
-			setName(data.name);
-			setDescription(data.description);
-			setPrice(data.price);
-		})
-	}, [courseId])
-
-	return(
-		<Container className="mt-5">
-			<Row>
-				<Col lg={{ span: 6, offset: 3}}>
-					<Card>
-						<Card.Body className="text-center">
-							<Card.Title>{name}</Card.Title>
-							<Card.Subtitle>Description</Card.Subtitle>
-							<Card.Text>{description}</Card.Text>
-							<Card.Subtitle>Price</Card.Subtitle>
-							<Card.Text>{price}</Card.Text>
-							<Card.Subtitle>Class Schedule:</Card.Subtitle>
-							<Card.Text>8 am - 5 pm</Card.Text>
-							{
-								user.id !== null ?
-									<Button variant="primary" block="true" onClick={() => enroll(courseId)}>Enroll</Button>
-								:
-									<Link className="btn btn-danger btn-block" to="/login">Login to Enroll</Link>
-
-							}
-							
-						</Card.Body>
-					</Card>
-				</Col>
-			</Row>
-		</Container>
-
-		)
-
+            <div className="d-flex align-items-center mb-3">
+              <label className="me-3">Quantity: </label>
+              <div className="input-group" style={{ width: '150px' }}>
+                <Button 
+                  variant="dark" 
+                  onClick={() => handleQuantityChange('decrease')}
+                  className="text-white"
+                  style={{ borderRadius: '0' }}
+                >
+                  -
+                </Button>
+                <input 
+                  type="text" 
+                  className="form-control ps-2" 
+                  value={quantity} 
+                  readOnly 
+                  style={{ textAlign: 'left', borderRadius: '0' }}
+                />
+                <Button 
+                  variant="dark" 
+                  onClick={() => handleQuantityChange('increase')}
+                  className="text-white"
+                  style={{ borderRadius: '0' }}
+                >
+                  +
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div 
+          className="card-footer" 
+          style={{ backgroundColor: '#f8f9fa', borderRadius: '0' }}
+        >
+          <Button 
+            variant="primary" 
+            onClick={handleAddToCart}
+            style={{ width: 'auto', borderRadius: '0' }}
+          >
+            Add to Cart
+          </Button>
+        </div>
+      </div>
+    </Container>
+  );
 }
