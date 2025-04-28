@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Form, Button, Row, Col } from 'react-bootstrap';
-import CourseCard from './CourseCard';
+import ProductCard from './ProductCard';
 
-export default function UserView({ coursesData = [] }) {
-  const [courses, setCourses] = useState([]);
+export default function UserView({ productsData = [] }) {
+  const [products, setProducts] = useState([]);
   const [productName, setProductName] = useState('');
   const [minPrice, setMinPrice] = useState('0');
   const [maxPrice, setMaxPrice] = useState('100000');
 
   useEffect(() => {
-    setCourses(coursesData);
-  }, [coursesData]);
+    setProducts(productsData);
+  }, [productsData]);
 
   const handlePriceChange = (setter, value) => {
     // Remove any non-numeric characters except decimal point
@@ -39,7 +39,7 @@ export default function UserView({ coursesData = [] }) {
         body: JSON.stringify({ name: productName })
       });
       const data = await response.json();
-      setCourses(data);
+      setProducts(data);
     } catch (error) {
       console.error('Error searching products:', error);
     }
@@ -59,7 +59,7 @@ export default function UserView({ coursesData = [] }) {
         })
       });
       const data = await response.json();
-      setCourses(data);
+      setProducts(data);
     } catch (error) {
       console.error('Error searching by price:', error);
     }
@@ -69,7 +69,7 @@ export default function UserView({ coursesData = [] }) {
     setProductName('');
     setMinPrice('0');
     setMaxPrice('100000');
-    setCourses(coursesData);
+    setProducts(productsData);
   };
 
   const priceInputStyle = {
@@ -187,9 +187,9 @@ export default function UserView({ coursesData = [] }) {
       <h2 className="text-center mb-5 my-5">Our Products</h2>
       
       <Row>
-        {courses.map(course => (
-          <Col md={4} key={course._id} className="mb-4">
-            <CourseCard courseProp={course} />
+        {products.map(products => (
+          <Col md={4} key={products._id} className="mb-4">
+            <ProductCard productProp={products} />
           </Col>
         ))}
       </Row>

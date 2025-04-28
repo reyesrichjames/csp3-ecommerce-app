@@ -2,12 +2,12 @@ import React from 'react';
 import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-export default function CourseCard({ courseProp }) {
-  if (!courseProp) {
+export default function ProductCard({ productProp }) {
+  if (!productProp) {
     return null;
   }
 
-  const { _id, name, description, price } = courseProp;
+  const { _id, name, description, price } = productProp;
 
   return (
     <Card id={_id} className="mb-3 h-100 d-flex flex-column">

@@ -4,9 +4,9 @@ import AdminDashboard from '../components/AdminView';
 import UserView from '../components/UserView';
 import UserContext from '../context/UserContext';
 
-export default function Courses() {
+export default function Products() {
   const { user } = useContext(UserContext);
-  const [courses, setCourses] = useState([]);
+  const [products, setProducts] = useState([]);
 
   const fetchData = () => {
 
@@ -22,7 +22,7 @@ export default function Courses() {
       .then(res => res.json())
       .then(data => {
         console.log('Fetched courses:', data);
-        setCourses(data);
+        setProducts(data);
       })
       .catch(error => console.error('Error fetching courses:', error));
   };
@@ -34,9 +34,9 @@ export default function Courses() {
   return (
     <>
       {user ?.isAdmin ? (
-        <AdminDashboard coursesData={courses} fetchData={fetchData} />
+        <AdminDashboard productsData={products} fetchData={fetchData} />
       ) : (
-        <UserView coursesData={courses}/>
+        <UserView productsData={products}/>
       )}
     </>
   );
