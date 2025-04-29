@@ -354,6 +354,12 @@ export default function AdminDashboard({ productsData, fetchData }) {
                       <tr key={product._id}>
                         <td>
                           {product.name}
+                          
+                              
+
+
+
+                              
                           {/* Description button for tablet view only */}
                           <div className="d-none d-sm-block d-lg-none" style={{ marginTop: '5px' }}>
                             <Button 
@@ -384,7 +390,7 @@ export default function AdminDashboard({ productsData, fetchData }) {
                         </td>
                         <td className="d-none d-lg-table-cell">{product.description}</td>
                         <td style={{textAlign: 'center', ...tableStyles.price}}>
-                          ${product.price}
+                          ₱{product.price}
                         </td>
                         <td className="d-none d-sm-table-cell" style={{textAlign: 'center'}}>
                           <span className={`text-${product.isActive ? 'success' : 'danger'}`}>
