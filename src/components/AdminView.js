@@ -21,7 +21,8 @@ export default function AdminDashboard({ productsData, fetchData }) {
     _id: '',
     name: '',
     description: '',
-    price: ''
+    price: '',
+    imageUrl: ''
   });
   const [showDescription, setShowDescription] = useState(false);
   const [selectedDescription, setSelectedDescription] = useState('');
@@ -233,7 +234,8 @@ export default function AdminDashboard({ productsData, fetchData }) {
             _id: product._id,
             name: product.name,
             description: product.description,
-            price: product.price
+            price: product.price,
+            imageUrl: product.imageUrl || '' // Add this line
           });
           setShowUpdateModal(true);
         };
@@ -263,6 +265,12 @@ export default function AdminDashboard({ productsData, fetchData }) {
             return;
           }
 
+          // Validate image URL if provided
+          if (productToUpdate.imageUrl && !productToUpdate.imageUrl.includes('postimg.cc')) {
+            notyf.error('Image URL must be from postimg.cc');
+            return;
+          }
+
           try {
             const response = await fetch(`https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/products/${productToUpdate._id}/update`, {
               method: 'PATCH',
@@ -273,14 +281,29 @@ export default function AdminDashboard({ productsData, fetchData }) {
               body: JSON.stringify({
                 name: productToUpdate.name,
                 description: productToUpdate.description,
-                price: numericPrice  // Send as number, not string
+                price: numericPrice,
+                imageUrl: productToUpdate.imageUrl
               })
             });
 
             const data = await response.json();
             if (response.ok) {
+              // Update the local state immediately
+              setProducts(products.map(product => 
+                product._id === productToUpdate._id 
+                  ? {
+                      ...product,
+                      name: productToUpdate.name,
+                      description: productToUpdate.description,
+                      price: numericPrice,
+                      imageUrl: productToUpdate.imageUrl
+                    }
+                  : product
+              ));
+              
               notyf.success('Product updated successfully');
               handleUpdateClose();
+              // Still fetch from server to ensure consistency
               fetchData();
             } else {
               notyf.error(data.message || 'Failed to update product');
@@ -354,23 +377,54 @@ export default function AdminDashboard({ productsData, fetchData }) {
                       <tr key={product._id}>
                         <td>
                           {product.name}
-                          
-                              
+
+                          {product.imageUrl && (
+                            <div style={{ 
+                              display: 'flex', 
+                              justifyContent: 'center', 
+                              margin: '10px 0',
+                              width: '100%' // Match parent width
+                            }}>
+                              <a 
+                                href={`https://postimg.cc/${product.imageUrl.split('/').find(segment => segment.length > 7)}`} 
+                                target='_blank' 
+                                rel="noopener noreferrer"
+                              >
+                                <img 
+                                  src={product.imageUrl}
+                                  alt={product.name}
+                                  style={{
+                                    width: '100%', // Take full width of parent
+                                    height: 'auto', // Maintain aspect ratio
+                                    maxHeight: '200px', // Maximum height
+                                    objectFit: 'contain', // Ensure whole image is visible
+                                    backgroundColor: 'white'
+                                  }}
+                                  onError={(e) => {
+                                    e.target.onerror = null; // Prevent infinite loop
+                                    e.target.style.display = 'none'; // Hide broken images
+                                  }}
+                                />
+                              </a>
+                            </div>
+                          )}
+                         
+                           
 
 
 
                               
                           {/* Description button for tablet view only */}
                           <div className="d-none d-sm-block d-lg-none" style={{ marginTop: '5px' }}>
-                            <Button 
-                              variant="success" 
-                              size="sm" 
-                              onClick={() => handleShowDescription(product.description)}
-                              style={{ borderRadius: '0' }}
-                            >
-                              Description
-                            </Button>
-                          </div>
+                              <Button 
+                                variant="success" 
+                                size="sm" 
+                                onClick={() => handleShowDescription(product.description)}
+                                style={{ borderRadius: '0' }}
+                              >
+                                Description
+                              </Button>
+                            </div>
                           {/* Availability for mobile view only */}
                           <div className="d-sm-none" style={{ marginTop: '5px' }}>
                             <span className={`text-${product.isActive ? 'success' : 'danger'}`}>
@@ -450,60 +504,76 @@ export default function AdminDashboard({ productsData, fetchData }) {
                 />
 
           <Modal show={showUpdateModal} onHide={handleUpdateClose}>
-                  <Modal.Header closeButton>
-                    <Modal.Title>Update Product</Modal.Title>
-                  </Modal.Header>
-                  <Form onSubmit={handleUpdateSubmit}>
-                    <Modal.Body style={tableStyles.modal.content}>
-                      <Form.Group>
-                        <Form.Label>Name</Form.Label>
-                        <Form.Control
-                          type="text"
-                          placeholder="Enter product name"
-                          value={productToUpdate.name}
-                          onChange={(e) => setProductToUpdate({...productToUpdate, name: e.target.value})}
-                        />
-                      </Form.Group>
+            <Modal.Header closeButton>
+              <Modal.Title>Update Product</Modal.Title>
+            </Modal.Header>
+            <Form onSubmit={handleUpdateSubmit}>
+              <Modal.Body style={tableStyles.modal.content}>
+                <Form.Group>
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter product name"
+                    value={productToUpdate.name}
+                    onChange={(e) => setProductToUpdate({...productToUpdate, name: e.target.value})}
+                  />
+                </Form.Group>
 
-                      <Form.Group>
-                        <Form.Label>Description</Form.Label>
-                        <Form.Control
-                          as="textarea"
-                          rows={3}
-                          placeholder="Enter product description"
-                          value={productToUpdate.description}
-                          onChange={(e) => setProductToUpdate({...productToUpdate, description: e.target.value})}
-                        />
-                      </Form.Group>
+                <Form.Group>
+                  <Form.Label>Description</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    placeholder="Enter product description"
+                    value={productToUpdate.description}
+                    onChange={(e) => setProductToUpdate({...productToUpdate, description: e.target.value})}
+                  />
+                </Form.Group>
 
-                      <Form.Group>
-                        <Form.Label>Price</Form.Label>
-                        <Form.Control
-                          type="number"
-                          step="0.01"
-                          min="0"
-                          placeholder="Enter price"
-                          value={productToUpdate.price}
-                          onChange={(e) => setProductToUpdate({
-                            ...productToUpdate, 
-                            price: e.target.value
-                          })}
-                        />
-                      </Form.Group>
-                    </Modal.Body>
-                    <Modal.Footer style={tableStyles.modal.footer}>
-                      <Button variant="secondary" onClick={handleUpdateClose}>
-                        Close
-                      </Button>
-                      <Button
-                        variant="primary"
-                        type="submit"
-                      >
-                        Update Product
-                      </Button>
-                    </Modal.Footer>
-                  </Form>
-                </Modal>
+                <Form.Group>
+                  <Form.Label>Price</Form.Label>
+                  <Form.Control
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    placeholder="Enter price"
+                    value={productToUpdate.price}
+                    onChange={(e) => setProductToUpdate({
+                      ...productToUpdate, 
+                      price: e.target.value
+                    })}
+                  />
+                </Form.Group>
+
+                <Form.Group>
+                  <Form.Label>Product Image Link</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter postimg.cc URL for product thumbnail"
+                    value={productToUpdate.imageUrl}
+                    onChange={(e) => setProductToUpdate({
+                      ...productToUpdate, 
+                      imageUrl: e.target.value
+                    })}
+                  />
+                  <Form.Text className="text-muted">
+                    Image URL must be from postimg.cc
+                  </Form.Text>
+                </Form.Group>
+              </Modal.Body>
+              <Modal.Footer style={tableStyles.modal.footer}>
+                <Button variant="secondary" onClick={handleUpdateClose}>
+                  Close
+                </Button>
+                <Button
+                  variant="primary"
+                  type="submit"
+                >
+                  Update Product
+                </Button>
+              </Modal.Footer>
+            </Form>
+          </Modal>
 
           <Modal show={showModal} onHide={handleClose}>
             <Modal.Header closeButton>
