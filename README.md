@@ -5,6 +5,7 @@ userview details = Reyes
 AdminDashboard - Reyes
 Profile page with reset password - Reyes
 Home Page - Reyes
+Full Responsiveness - Reyes
 
 # Getting Started with Create React App
 
