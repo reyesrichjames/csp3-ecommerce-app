@@ -127,7 +127,10 @@ const Login = () => {
                   variant="primary" 
                   type="submit" 
                   disabled={isButtonDisabled}
-                  style={{ width: 'auto' }}
+                  style={{ 
+                    width: 'auto',
+                    borderRadius: '0'  // This removes the border radius
+                  }}
                 >
                   Submit
                 </Button>
