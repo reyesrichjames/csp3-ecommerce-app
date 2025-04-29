@@ -17,6 +17,9 @@ export default function Banner({ data }) {
         <Button 
           variant="primary" 
           onClick={() => setShouldNavigate(true)}
+          style={{
+            borderRadius: '0'
+          }}
         >
           {data.buttonLabel}
         </Button>

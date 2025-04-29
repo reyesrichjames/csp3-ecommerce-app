@@ -10,7 +10,11 @@ export default function ProductCard({ productProp }) {
   const { _id, name, description, price } = productProp;
 
   return (
-    <Card id={_id} className="mb-3 h-100 d-flex flex-column mx-3">
+    <Card 
+      id={_id} 
+      className="mb-3 h-100 d-flex flex-column mx-3"
+      style={{ borderRadius: '0' }} // Removed border radius from the main card
+    >
       <Card.Body className="flex-grow-1">
         <Card.Title>
           <Link 
@@ -31,7 +35,10 @@ export default function ProductCard({ productProp }) {
           color: '#FF6B00'
         }}>₱{price}</span>
       </Card.Text>
-      <Card.Footer className="bg-light border-top text-start">
+      <Card.Footer 
+        className="bg-light border-top text-start"
+        style={{ borderRadius: '0' }} // Removed border radius from footer
+      >
         <Link 
           className="btn btn-primary" 
           to={`/products/${_id}`}

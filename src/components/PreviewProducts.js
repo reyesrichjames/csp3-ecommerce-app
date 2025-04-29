@@ -9,7 +9,8 @@ export default function PreviewProducts(props) {
     <Col xs={12} md={breakPoint}>
       <Card className="h-100 d-flex flex-column mx-3" style={{ 
         border: '1px solid #dee2e6',
-        minHeight: '350px' // Reduced from 400px
+        minHeight: '350px',
+        borderRadius: '0' // Removed border radius from card
       }}>
         <Card.Body className="flex-grow-1">
           <Card.Title>
@@ -26,7 +27,7 @@ export default function PreviewProducts(props) {
             </Link>
           </Card.Title>
           <Card.Text style={{ 
-            maxHeight: '200px', // Reduced from 250px
+            maxHeight: '200px',
             overflowY: 'auto',
             fontSize: '0.9rem',
             color: '#6c757d'
@@ -43,7 +44,10 @@ export default function PreviewProducts(props) {
         }}>
           ₱{price}
         </div>
-        <Card.Footer className="bg-light border-top text-start">
+        <Card.Footer 
+          className="bg-light border-top text-start"
+          style={{ borderRadius: '0' }} // Removed border radius from footer
+        >
           <Link 
             className="btn btn-primary" 
             to={`/products/${_id}`}
@@ -51,7 +55,7 @@ export default function PreviewProducts(props) {
               width: 'auto',
               backgroundColor: '#0d6efd',
               border: 'none',
-              borderRadius: '4px',
+              borderRadius: '0', // Removed border radius from button
               display: 'inline-block'
             }}
           >
