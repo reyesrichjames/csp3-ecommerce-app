@@ -34,6 +34,57 @@ export default function ProductView() {
     return <Container>Loading...</Container>;
   }
 
+  const renderActionButton = () => {
+    if (!user.id) {
+      return (
+        <Link to="/login">
+          <Button 
+            variant="warning" 
+            style={{ 
+              width: 'auto', 
+              borderRadius: '0',
+              backgroundColor: '#FF6347',
+              borderColor: '#FF6347',
+              color: 'white',
+              fontSize: '14px',
+              padding: '6px 12px'
+            }}
+          >
+            Log in to Add to Cart
+          </Button>
+        </Link>
+      );
+    } else if (user.isAdmin) {
+      return (
+        <Button 
+          variant="danger" 
+          disabled
+          style={{ 
+            width: 'auto', 
+            borderRadius: '0',
+            fontSize: '14px',
+            padding: '6px 12px'
+          }}
+        >
+          Admin can't add to Cart
+        </Button>
+      );
+    } else {
+      return (
+        <Button 
+          variant="primary" 
+          onClick={handleAddToCart}
+          style={{ 
+            width: 'auto', 
+            borderRadius: '0' 
+          }}
+        >
+          Add to Cart
+        </Button>
+      );
+    }
+  };
+
   return (
     <Container className="mt-5">
       <div className="card" style={{ borderRadius: '0' }}>
@@ -63,7 +114,7 @@ export default function ProductView() {
                     backgroundColor: '#373a3c',
                     borderColor: '#373a3c'
                   }}
-                  disabled={!user.id}
+                  disabled={!user.id || user.isAdmin}
                 >
                   -
                 </Button>
@@ -82,7 +133,7 @@ export default function ProductView() {
                     backgroundColor: '#373a3c',
                     borderColor: '#373a3c'
                   }}
-                  disabled={!user.id}
+                  disabled={!user.id || user.isAdmin}
                 >
                   +
                 </Button>
@@ -94,35 +145,7 @@ export default function ProductView() {
           className="card-footer" 
           style={{ backgroundColor: '#f8f9fa', borderRadius: '0' }}
         >
-          {user.id ? (
-            <Button 
-              variant="primary" 
-              onClick={handleAddToCart}
-              style={{ 
-                width: 'auto', 
-                borderRadius: '0' 
-              }}
-            >
-              Add to Cart
-            </Button>
-          ) : (
-            <Link to="/login">
-              <Button 
-                variant="warning" 
-                style={{ 
-                  width: 'auto', 
-                  borderRadius: '0',
-                  backgroundColor: '#FF6347', // Slightly darker orange (Tomato)
-                  borderColor: '#FF6347',
-                  color: 'white',
-                  fontSize: '14px',
-                  padding: '6px 12px'
-                }}
-              >
-                Log in to Add to Cart
-              </Button>
-            </Link>
-          )}
+          {renderActionButton()}
         </div>
       </div>
     </Container>
