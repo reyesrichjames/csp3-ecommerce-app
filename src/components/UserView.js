@@ -198,7 +198,7 @@ export default function UserView({ productsData = [] }) {
       
       <Row>
         {products.map(products => (
-          <Col md={4} key={products._id} className="mb-4">
+          <Col xs={12} md={6} lg={4} key={products._id} className="mb-4">
             <ProductCard productProp={products} />
           </Col>
         ))}

@@ -31,18 +31,9 @@ export default function FeaturedProducts() {
   return (
     <Container>
       <h2 className="text-center mb-5">Featured Products</h2>
-      <Row>
-        {previews.slice(0, 3).map(product => (
+      <Row className="g-4">
+        {previews.map(product => (
           <PreviewProducts 
-            data={product} 
-            key={product.key} 
-            breakPoint={4}
-          />
-        ))}
-      </Row>
-      <Row className="mt-4">
-        {previews.slice(3, 6).map(product => (
-          <PreviewProducts
             data={product} 
             key={product.key} 
             breakPoint={4}

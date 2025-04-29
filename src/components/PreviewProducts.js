@@ -6,11 +6,11 @@ export default function PreviewProducts(props) {
   const { _id, name, description, price } = data;
 
   return (
-    <Col xs={12} md={breakPoint}>
+    <Col xs={12} md={6} lg={breakPoint}>
       <Card className="h-100 d-flex flex-column mx-3" style={{ 
         border: '1px solid #dee2e6',
         minHeight: '350px',
-        borderRadius: '0' // Removed border radius from card
+        borderRadius: '0'
       }}>
         <Card.Body className="flex-grow-1">
           <Card.Title>
@@ -46,7 +46,7 @@ export default function PreviewProducts(props) {
         </div>
         <Card.Footer 
           className="bg-light border-top text-start"
-          style={{ borderRadius: '0' }} // Removed border radius from footer
+          style={{ borderRadius: '0' }}
         >
           <Link 
             className="btn btn-primary" 
@@ -55,7 +55,7 @@ export default function PreviewProducts(props) {
               width: 'auto',
               backgroundColor: '#0d6efd',
               border: 'none',
-              borderRadius: '0', // Removed border radius from button
+              borderRadius: '0',
               display: 'inline-block'
             }}
           >
