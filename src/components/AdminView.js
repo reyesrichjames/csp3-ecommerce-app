@@ -23,6 +23,8 @@ export default function AdminDashboard({ productsData, fetchData }) {
     description: '',
     price: ''
   });
+  const [showDescription, setShowDescription] = useState(false);
+  const [selectedDescription, setSelectedDescription] = useState('');
 
   useEffect(() => {
     if (!Array.isArray(productsData)) return;
@@ -43,6 +45,25 @@ export default function AdminDashboard({ productsData, fetchData }) {
       setIsSubmitDisabled(true);
     }
   }, [newProduct]);
+
+  const handleShowDescription = (description) => {
+      setSelectedDescription(description);
+      setShowDescription(true);
+    };
+
+  const DescriptionModal = ({ show, handleClose, description }) => (
+    <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>Product Description</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>{description}</Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          Close
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -160,7 +181,7 @@ export default function AdminDashboard({ productsData, fetchData }) {
          actionButtonContainer: {
            display: 'flex',
            flexDirection: 'column',
-           alignItems: 'flex-start',
+           alignItems: 'center',
            padding: '0 10px'
          },
          price: {
@@ -319,50 +340,108 @@ export default function AdminDashboard({ productsData, fetchData }) {
           <Table striped bordered hover responsive style={tableStyles.table}>
             <thead>
               <tr style={tableStyles.tableHeader}>
-                <th style={{width: '20%'}}>Name</th>
-                <th style={{width: '45%'}}>Description</th>
-                <th style={{width: '15%', textAlign: 'center'}}>Price</th>
-                <th style={{width: '15%', textAlign: 'center'}}>Availability</th>
-                <th className="text-center" style={{width: '120px'}}>Actions</th> {/* Updated width to match button width + padding */}
+                <th style={{width: '25%'}}>Name</th>
+                <th className="d-none d-lg-table-cell" style={{width: '45%'}}>Description</th>
+                {/* Remove the View header for tablet view */}
+                <th className="d-lg-none d-sm-none" style={{width: '15%', textAlign: 'center'}}>View</th>
+                <th style={{width: '25%', textAlign: 'center'}}>Price</th>
+                <th className="d-none d-sm-table-cell" style={{width: '25%', textAlign: 'center'}}>Availability</th>
+                <th className="d-none d-sm-table-cell" style={{width: '25%', textAlign: 'center'}}>Actions</th>
               </tr>
             </thead>
-            <tbody>
-                  {products.map(product => (
-                    <tr key={product._id}>
-                      <td>{product.name}</td>
-                      <td>{product.description}</td>
-                      <td style={{textAlign: 'center', ...tableStyles.price}}>
-                        ${product.price}
-                      </td>
-                      <td style={{textAlign: 'center'}}>
-                        <span className={`text-${product.isActive ? 'success' : 'danger'}`}>
-                          {product.isActive ? 'Available' : 'Unavailable'}
-                        </span>
-                      </td>
-                      <td style={{width: '120px'}}>
-                        <div style={tableStyles.actionButtonContainer}>
-                          <Button 
-                                  variant="primary" 
-                                  size="sm" 
-                                  style={tableStyles.actionButton}
-                                  onClick={() => handleUpdateClick(product)}
-                                >
-                                  Update
-                                </Button>
-                          <Button 
-                            variant={product.isActive ? "danger" : "success"}
-                            size="sm"
-                            style={tableStyles.actionButton}
-                            onClick={() => handleArchive(product._id, product.isActive)}
-                          >
-                            {product.isActive ? 'Disable' : 'Enable'}
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-          </Table>
+                  <tbody>
+                    {products.map(product => (
+                      <tr key={product._id}>
+                        <td>
+                          {product.name}
+                          {/* Description button for tablet view only */}
+                          <div className="d-none d-sm-block d-lg-none" style={{ marginTop: '5px' }}>
+                            <Button 
+                              variant="success" 
+                              size="sm" 
+                              onClick={() => handleShowDescription(product.description)}
+                              style={{ borderRadius: '0' }}
+                            >
+                              Description
+                            </Button>
+                          </div>
+                          {/* Availability for mobile view only */}
+                          <div className="d-sm-none" style={{ marginTop: '5px' }}>
+                            <span className={`text-${product.isActive ? 'success' : 'danger'}`}>
+                              {product.isActive ? 'Available' : 'Unavailable'}
+                            </span>
+                            <div style={{ marginTop: '5px' }}>
+                              <Button  
+                                variant="success" 
+                                size="sm" 
+                                onClick={() => handleShowDescription(product.description)}
+                                style={{ borderRadius: '0' }}
+                              >
+                                Description
+                              </Button>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="d-none d-lg-table-cell">{product.description}</td>
+                        <td style={{textAlign: 'center', ...tableStyles.price}}>
+                          ${product.price}
+                        </td>
+                        <td className="d-none d-sm-table-cell" style={{textAlign: 'center'}}>
+                          <span className={`text-${product.isActive ? 'success' : 'danger'}`}>
+                            {product.isActive ? 'Available' : 'Unavailable'}
+                          </span>
+                        </td>
+                        <td className="d-none d-sm-table-cell" style={{width: '120px'}}>
+                          <div style={tableStyles.actionButtonContainer}>
+                            <Button 
+                              variant="primary" 
+                              size="sm" 
+                              style={tableStyles.actionButton}
+                              onClick={() => handleUpdateClick(product)}
+                            >
+                              Update
+                            </Button>
+                            <Button 
+                              variant={product.isActive ? "danger" : "success"}
+                              size="sm"
+                              style={tableStyles.actionButton}
+                              onClick={() => handleArchive(product._id, product.isActive)}
+                            >
+                              {product.isActive ? 'Disable' : 'Enable'}
+                            </Button>
+                          </div>
+                        </td>
+                        <td className="d-sm-none">
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                            <Button 
+                              style={{ borderRadius: '0' }}
+                              variant="primary" 
+                              size="sm" 
+                              onClick={() => handleUpdateClick(product)}
+                            >
+                              Update
+                            </Button>
+                            <Button 
+                              style={{ borderRadius: '0' }}
+                              variant={product.isActive ? "danger" : "success"}
+                              size="sm"
+                              onClick={() => handleArchive(product._id, product.isActive)}
+                            >
+                              {product.isActive ? 'Disable' : 'Enable'}
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+
+                {/* Add Description Modal */}
+                <DescriptionModal 
+                  show={showDescription}
+                  handleClose={() => setShowDescription(false)}
+                  description={selectedDescription}
+                />
 
           <Modal show={showUpdateModal} onHide={handleUpdateClose}>
                   <Modal.Header closeButton>
@@ -451,17 +530,19 @@ export default function AdminDashboard({ productsData, fetchData }) {
                   <Form.Label>Price</Form.Label>
                   <Form.Control
                     type="number"
-                    placeholder="Enter price"
+                    placeholder="0"
                     value={newProduct.price}
                     onChange={(e) => setNewProduct({...newProduct, price: e.target.value})}
                   />
                 </Form.Group>
               </Modal.Body>
               <Modal.Footer style={tableStyles.modal.footer}>
-                <Button variant="secondary" onClick={handleClose}>
+                <Button variant="dark" onClick={handleClose} style={{borderRadius: '0'}}>
                   Close
                 </Button>
                 <Button
+                  style={{borderRadius: '0'}}
+                  className="bg-success"
                   variant={isSubmitDisabled ? "danger" : "primary"}
                   type="submit"
                   disabled={isSubmitDisabled}
