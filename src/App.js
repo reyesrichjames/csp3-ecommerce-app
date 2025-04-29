@@ -35,21 +35,27 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      fetch('http://localhost:4000/users/details', {
+      fetch('https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/users/details', {
         headers: {
           Authorization: `Bearer ${token}`
         }
       })
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('Invalid token');
+        }
+        return res.json();
+      })
       .then(data => {
         setUser({
           id: data._id,
           isAdmin: data.isAdmin
         });
-        setIsLoading(false);
       })
       .catch(() => {
         unsetUser();
+      })
+      .finally(() => {
         setIsLoading(false);
       });
     } else {
