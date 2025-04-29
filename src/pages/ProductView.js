@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Container, Button } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
+import UserContext from '../context/UserContext';
 
 export default function ProductView() {
   const { productId } = useParams();
+  const { user } = useContext(UserContext);
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
 
@@ -25,7 +27,6 @@ export default function ProductView() {
   };
 
   const handleAddToCart = () => {
-    // Add to cart functionality can be implemented here
     console.log('Adding to cart:', { product, quantity });
   };
 
@@ -37,10 +38,10 @@ export default function ProductView() {
     <Container className="mt-5">
       <div className="card" style={{ borderRadius: '0' }}>
         <div 
-          className="card-header text-center text-white py-3" 
-          style={{ backgroundColor: '#000', borderRadius: '0' }}
+          className="card-header text-center text-white py-2" 
+          style={{ backgroundColor: '#373a3c', borderRadius: '0' }}
         >
-          <h2 className="mb-0">{product.name}</h2>
+          <h4 className="mb-0" style={{ fontSize: '1.5rem' }}>{product.name}</h4>
         </div>
         <div className="card-body">
           <p className="card-text">{product.description}</p>
@@ -55,10 +56,14 @@ export default function ProductView() {
               <label className="me-3">Quantity: </label>
               <div className="input-group" style={{ width: '150px' }}>
                 <Button 
-                  variant="dark" 
                   onClick={() => handleQuantityChange('decrease')}
                   className="text-white"
-                  style={{ borderRadius: '0' }}
+                  style={{ 
+                    borderRadius: '0',
+                    backgroundColor: '#373a3c',
+                    borderColor: '#373a3c'
+                  }}
+                  disabled={!user.id}
                 >
                   -
                 </Button>
@@ -70,10 +75,14 @@ export default function ProductView() {
                   style={{ textAlign: 'left', borderRadius: '0' }}
                 />
                 <Button 
-                  variant="dark" 
                   onClick={() => handleQuantityChange('increase')}
                   className="text-white"
-                  style={{ borderRadius: '0' }}
+                  style={{ 
+                    borderRadius: '0',
+                    backgroundColor: '#373a3c',
+                    borderColor: '#373a3c'
+                  }}
+                  disabled={!user.id}
                 >
                   +
                 </Button>
@@ -85,13 +94,35 @@ export default function ProductView() {
           className="card-footer" 
           style={{ backgroundColor: '#f8f9fa', borderRadius: '0' }}
         >
-          <Button 
-            variant="primary" 
-            onClick={handleAddToCart}
-            style={{ width: 'auto', borderRadius: '0' }}
-          >
-            Add to Cart
-          </Button>
+          {user.id ? (
+            <Button 
+              variant="primary" 
+              onClick={handleAddToCart}
+              style={{ 
+                width: 'auto', 
+                borderRadius: '0' 
+              }}
+            >
+              Add to Cart
+            </Button>
+          ) : (
+            <Link to="/login">
+              <Button 
+                variant="warning" 
+                style={{ 
+                  width: 'auto', 
+                  borderRadius: '0',
+                  backgroundColor: '#FF6347', // Slightly darker orange (Tomato)
+                  borderColor: '#FF6347',
+                  color: 'white',
+                  fontSize: '14px',
+                  padding: '6px 12px'
+                }}
+              >
+                Log in to Add to Cart
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </Container>

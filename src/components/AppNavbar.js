@@ -15,7 +15,7 @@ export default function AppNavbar() {
   };
 
   const navbarStyle = {
-    backgroundColor: '#2C3E50',
+    backgroundColor: '#373a3c',
     padding: '0.5rem 1rem',
   };
 
