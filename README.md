@@ -6,6 +6,7 @@ AdminDashboard - Reyes
 Profile page with reset password - Reyes
 Home Page - Reyes
 Full Responsiveness - Reyes
+Images - Reyes
 
 # Getting Started with Create React App
 
