@@ -7,15 +7,53 @@ export default function ProductCard({ productProp }) {
     return null;
   }
 
-  const { _id, name, description, price } = productProp;
+  const { _id, name, description, price, imageUrl } = productProp;;
 
   return (
     <Card 
-      id={_id} 
-      className="mb-3 h-100 d-flex flex-column mx-3"
-      style={{ borderRadius: '0' }} // Removed border radius from the main card
-    >
-      <Card.Body className="flex-grow-1">
+          id={_id} 
+          className="mb-3 h-100 d-flex flex-column mx-3"
+          style={{ borderRadius: '0' }}
+        >
+          {imageUrl && (
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'center',
+              alignItems: 'center',
+              margin: '10px 0',
+              width: '100%',
+              height: '200px' // Fixed container height
+            }}>
+              <a 
+                href={`https://postimg.cc/${imageUrl.split('/').find(segment => segment.length > 7)}`} 
+                target='_blank' 
+                rel="noopener noreferrer"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <img 
+                  src={imageUrl}
+                  alt={name}
+                  style={{
+                    maxWidth: '100%',
+                    maxHeight: '100%',
+                    objectFit: 'contain',
+                    backgroundColor: 'white'
+                  }}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.style.display = 'none';
+                  }}
+                />
+              </a>
+            </div>
+          )}
+          <Card.Body className="flex-grow-1">    
         <Card.Title>
           <Link 
             to={`/courses/${_id}`}

@@ -3,16 +3,54 @@ import { Link } from 'react-router-dom';
 
 export default function PreviewProducts(props) {
   const { breakPoint, data } = props;
-  const { _id, name, description, price } = data;
+  const { _id, name, description, price, imageUrl } = data;
 
   return (
     <Col xs={12} md={6} lg={breakPoint}>
-      <Card className="h-100 d-flex flex-column mx-3" style={{ 
-        border: '1px solid #dee2e6',
-        minHeight: '350px',
-        borderRadius: '0'
-      }}>
-        <Card.Body className="flex-grow-1">
+          <Card className="h-100 d-flex flex-column mx-3" style={{ 
+            border: '1px solid #dee2e6',
+            minHeight: '350px',
+            borderRadius: '0'
+          }}>
+            {imageUrl && (
+              <div style={{ 
+                display: 'flex', 
+                justifyContent: 'center',
+                alignItems: 'center',
+                margin: '10px 0',
+                width: '100%',
+                height: '200px' // Fixed container height
+              }}>
+                <a 
+                  href={`https://postimg.cc/${imageUrl.split('/').find(segment => segment.length > 7)}`} 
+                  target='_blank' 
+                  rel="noopener noreferrer"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <img 
+                    src={imageUrl}
+                    alt={name}
+                    style={{
+                      maxWidth: '100%',
+                      maxHeight: '100%',
+                      objectFit: 'contain',
+                      backgroundColor: 'white'
+                    }}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.style.display = 'none';
+                    }}
+                  />
+                </a>
+              </div>
+            )}
+            <Card.Body className="flex-grow-1">
           <Card.Title>
             <Link 
               to={`/products/${_id}`}
