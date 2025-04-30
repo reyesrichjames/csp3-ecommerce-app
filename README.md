@@ -11,6 +11,16 @@ Cart - Reyes
 Order - Reyes
 Show order history admin - Reyes
 
+admin user
+
+gigi@mail.com
+12345678
+
+regular user
+
+reyesrich.james@gmail.com
+user1234
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
