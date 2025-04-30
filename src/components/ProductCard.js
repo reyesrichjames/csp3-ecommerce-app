@@ -56,7 +56,7 @@ export default function ProductCard({ productProp }) {
           <Card.Body className="flex-grow-1">    
         <Card.Title>
           <Link 
-            to={`/courses/${_id}`}
+            to={`/products/${_id}`}
             style={{ 
               color: '#0d6efd',
               textDecoration: 'underline'
