@@ -16,6 +16,8 @@ import ProductView from './pages/ProductView';
 
 import { UserProvider } from './context/UserContext';
 import 'notyf/notyf.min.css';
+import Cart from './pages/Cart';
+import Orders from './pages/Orders';
 
 function App() {
   const [user, setUser] = useState({
@@ -81,6 +83,8 @@ function App() {
             <Route path="/logout" element={<Logout />} />
             <Route path="/products/:productId" element={<ProductView />} />
             <Route path="*" element={<Error />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/orders" element={<Orders />} />
           </Routes>
         </Container>
       </Router>

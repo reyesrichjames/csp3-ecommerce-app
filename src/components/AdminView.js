@@ -1,14 +1,41 @@
 import { useState, useEffect, useContext } from 'react';
-import { Table, Container, Row, Col, Modal, Form, Button } from 'react-bootstrap';
+import { 
+  Table, 
+  Container, 
+  Row, 
+  Col, 
+  Modal, 
+  Form, 
+  Button,
+  Card,
+  Collapse 
+} from 'react-bootstrap';
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
 import UserContext from '../context/UserContext';
+
+const DescriptionModal = ({ show, handleClose, description }) => (
+    <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>Product Description</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>{description}</Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          Close
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
 
 export default function AdminDashboard({ productsData, fetchData }) {
   const { user } = useContext(UserContext);
   const notyf = new Notyf();
   
   const [products, setProducts] = useState([]);
+  const [showOrders, setShowOrders] = useState(false);
+  const [allOrders, setAllOrders] = useState([]);
+  const [expandedUsers, setExpandedUsers] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [newProduct, setNewProduct] = useState({
     name: '',
@@ -47,24 +74,65 @@ export default function AdminDashboard({ productsData, fetchData }) {
     }
   }, [newProduct]);
 
+  const fetchAllOrders = async () => {
+    try {
+      const response = await fetch('https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/orders/all-orders', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+
+      const data = await response.json();
+      
+      if (response.ok) {
+        // Group orders by userEmail instead of userId
+        const ordersByUser = data.orders.reduce((acc, order) => {
+          const userEmail = order.userEmail || order.userId; // fallback to userId if email not available
+          if (!acc[userEmail]) {
+            acc[userEmail] = [];
+          }
+          acc[userEmail].push(order);
+          return acc;
+        }, {});
+        
+        setAllOrders(ordersByUser);
+      } else {
+        notyf.error(data.message || 'Failed to fetch orders');
+      }
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+      notyf.error('An error occurred while fetching orders');
+    }
+  };
+
+  const toggleUserOrders = (userId) => {
+    setExpandedUsers(prev => ({
+      ...prev,
+      [userId]: !prev[userId]
+    }));
+  };
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric'
+    });
+  };
+
+  const toggleView = () => {
+    if (!showOrders) {
+      fetchAllOrders();
+    }
+    setShowOrders(!showOrders);
+  };
+
   const handleShowDescription = (description) => {
       setSelectedDescription(description);
       setShowDescription(true);
     };
 
-  const DescriptionModal = ({ show, handleClose, description }) => (
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Product Description</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>{description}</Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          Close
-        </Button>
-      </Modal.Footer>
-    </Modal>
-  );
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -341,24 +409,66 @@ export default function AdminDashboard({ productsData, fetchData }) {
 
       return (
         <Container style={tableStyles.container}>
-          <div style={tableStyles.header}>
-            <h1 style={tableStyles.title}>Admin Dashboard</h1>
-            <div style={tableStyles.buttonGroup}>
-              <Button 
-                variant="primary" 
-                onClick={handleShow}
-                style={tableStyles.headerButton}
+      <div style={tableStyles.header}>
+        <h1 style={tableStyles.title}>Admin Dashboard</h1>
+        <div style={tableStyles.buttonGroup}>
+          <Button 
+            variant="primary" 
+            onClick={handleShow}
+            style={tableStyles.headerButton}
+          >
+            Add New Product
+          </Button>
+          <Button 
+            variant={showOrders ? "danger" : "success"}
+            style={tableStyles.headerButton}
+            onClick={toggleView}
+          >
+            {showOrders ? 'Show Product Details' : 'Show User Orders'}
+          </Button>
+        </div>
+      </div>
+
+      {showOrders ? (
+        <div className="mt-4">
+          {Object.entries(allOrders).map(([userEmail, userOrders]) => (
+            <Card key={userEmail} className="mb-3">
+              <Card.Header
+                className="bg-dark text-white"
+                style={{ cursor: 'pointer' }}
+                onClick={() => toggleUserOrders(userEmail)}
               >
-                Add New Product
-              </Button>
-              <Button 
-                variant="success"
-                style={tableStyles.headerButton}
-              >
-                Show User Orders
-              </Button>
-            </div>
-          </div>
+                Orders for: {userEmail}
+              </Card.Header>
+              <Collapse in={expandedUsers[userEmail]}>
+                <Card.Body>
+                  {userOrders.map((order) => (
+                    <div key={order._id} className="mb-3">
+                      <div className="mb-2">
+                        Purchased on {formatDate(order.orderedOn)}:
+                      </div>
+                      <ul style={{ listStyleType: 'circle', paddingLeft: '20px' }}>
+                        {order.productsOrdered.map((product) => (
+                          <li key={product._id}>
+                            Quantity: {product.quantity}
+                            <div style={{ color: '#666' }}>
+                              Subtotal: ₱{product.subtotal}
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                      <div style={{ color: '#ff6b6b', fontWeight: 'bold' }}>
+                        Total: ₱{order.totalPrice}
+                      </div>
+                    </div>
+                  ))}
+                </Card.Body>
+              </Collapse>
+            </Card>
+          ))}
+        </div>
+      ) : (
+      <>
 
           <Table striped bordered hover responsive style={tableStyles.table}>
             <thead>
@@ -498,10 +608,10 @@ export default function AdminDashboard({ productsData, fetchData }) {
 
                 {/* Add Description Modal */}
                 <DescriptionModal 
-                  show={showDescription}
-                  handleClose={() => setShowDescription(false)}
-                  description={selectedDescription}
-                />
+                        show={showDescription}
+                        handleClose={() => setShowDescription(false)}
+                        description={selectedDescription}
+                      />
 
           <Modal show={showUpdateModal} onHide={handleUpdateClose}>
             <Modal.Header closeButton>
@@ -628,6 +738,8 @@ export default function AdminDashboard({ productsData, fetchData }) {
               </Modal.Footer>
             </Form>
           </Modal>
+          </>
+          )}
         </Container>
       );
     }

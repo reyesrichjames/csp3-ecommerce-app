@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { Container, Button } from 'react-bootstrap';
 import { useParams, Link } from 'react-router-dom';
 import UserContext from '../context/UserContext';
+import AddToCart from '../components/AddToCart';
 
 export default function ProductView() {
   const { productId } = useParams();
@@ -71,16 +72,11 @@ export default function ProductView() {
       );
     } else {
       return (
-        <Button 
-          variant="primary" 
-          onClick={handleAddToCart}
-          style={{ 
-            width: 'auto', 
-            borderRadius: '0' 
-          }}
-        >
-          Add to Cart
-        </Button>
+        <AddToCart 
+          productId={productId}
+          quantity={quantity}
+          price={product.price}
+        />
       );
     }
   };
