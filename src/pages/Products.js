@@ -11,8 +11,8 @@ export default function Products() {
   const fetchData = () => {
 
     const fetchUrl = user.isAdmin
-      ? 'https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/products/all'
-      : 'https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/products/active'
+      ? `${process.env.REACT_APP_API_BASE_URL}/products/all`
+      : `${process.env.REACT_APP_API_BASE_URL}/products/active`
 
     fetch(fetchUrl, {
       headers: {

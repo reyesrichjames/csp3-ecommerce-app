@@ -37,7 +37,7 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      fetch('https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/users/details', {
+      fetch(`${process.env.REACT_APP_API_BASE_URL}/users/details`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

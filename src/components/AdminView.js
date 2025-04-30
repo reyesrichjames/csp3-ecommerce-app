@@ -2,8 +2,6 @@ import { useState, useEffect, useContext } from 'react';
 import { 
   Table, 
   Container, 
-  Row, 
-  Col, 
   Modal, 
   Form, 
   Button,
@@ -76,7 +74,7 @@ export default function AdminDashboard({ productsData, fetchData }) {
 
   const fetchAllOrders = async () => {
     try {
-      const response = await fetch('https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/orders/all-orders', {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/orders/all-orders`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -155,7 +153,7 @@ export default function AdminDashboard({ productsData, fetchData }) {
     };
 
     try {
-      const response = await fetch('https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/products/', {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/products/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -194,17 +192,9 @@ export default function AdminDashboard({ productsData, fetchData }) {
 
   const handleShow = () => setShowModal(true);
 
-  const headerStyle = {
-      backgroundColor: '#343a40',
-      color: 'white',
-      padding: '8px 16px',
-      marginBottom: '20px'
-    };
+  
 
-    const tableHeaderStyle = {
-      backgroundColor: '#f8f9fa',
-      borderBottom: '2px solid #dee2e6'
-    };
+    
 
      const tableStyles = {
          container: {
@@ -268,33 +258,7 @@ export default function AdminDashboard({ productsData, fetchData }) {
          }
        };
 
-       const handleUpdate = async (productId, productData) => {
-           try {
-             const response = await fetch(`https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/products/${productId}/update`, {
-               method: 'PATCH',
-               headers: {
-                 'Content-Type': 'application/json',
-                 'Authorization': `Bearer ${localStorage.getItem('token')}`
-               },
-               body: JSON.stringify({
-                 name: productData.name,
-                 description: productData.description,
-                 price: productData.price
-               })
-             });
-
-             const data = await response.json();
-             if (response.ok) {
-               notyf.success('Product updated successfully');
-               fetchData();
-             } else {
-               notyf.error(data.message || 'Failed to update product');
-             }
-           } catch (error) {
-             console.error('Error updating product:', error);
-             notyf.error('An error occurred while updating the product');
-           }
-         };
+       
 
          
       const handleUpdateClick = (product) => {
@@ -340,7 +304,7 @@ export default function AdminDashboard({ productsData, fetchData }) {
           }
 
           try {
-            const response = await fetch(`https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/products/${productToUpdate._id}/update`, {
+            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/products/${productToUpdate._id}/update`, {
               method: 'PATCH',
               headers: {
                 'Content-Type': 'application/json',
@@ -387,7 +351,7 @@ export default function AdminDashboard({ productsData, fetchData }) {
             // If product is currently active, we archive it, otherwise we activate it
             const endpoint = currentStatus ? 'archive' : 'activate';
             
-            const response = await fetch(`https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/products/${productId}/${endpoint}`, {
+            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/products/${productId}/${endpoint}`, {
               method: 'PATCH',
               headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`

@@ -69,7 +69,7 @@ const Register = () => {
           return;
         }
 
-        fetch('https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/users/register', {
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/users/register`, {
           method: 'POST',
           headers: {
             'Content-Type': "application/json"

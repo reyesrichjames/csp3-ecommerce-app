@@ -6,7 +6,7 @@ export default function FeaturedProducts() {
   const [previews, setPreviews] = useState([]);
 
   useEffect(() => {
-    fetch('https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/products/active')
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/products/active`)
       .then(res => res.json())
       .then(data => {
         // Create array of indices and shuffle it

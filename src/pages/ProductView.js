@@ -11,7 +11,7 @@ export default function ProductView() {
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
-    fetch(`https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/products/${productId}`)
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/products/${productId}`)
       .then(res => res.json())
       .then(data => {
         setProduct(data);

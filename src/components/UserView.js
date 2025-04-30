@@ -30,7 +30,7 @@ export default function UserView({ productsData = [] }) {
 
   const handleSearchByName = async () => {
     try {
-      const response = await fetch('https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/products/search-by-name/', {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/products/search-by-name/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -52,7 +52,7 @@ export default function UserView({ productsData = [] }) {
 
   const handleSearchByPrice = async () => {
     try {
-      const response = await fetch('https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/products/search-by-price/', {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/products/search-by-price/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

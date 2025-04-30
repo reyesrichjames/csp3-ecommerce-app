@@ -9,7 +9,7 @@ export default function AddToCart({ productId, quantity, price }) {
     try {
       const subtotal = price * quantity;
 
-      const response = await fetch('https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/cart/add-to-cart', {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/cart/add-to-cart`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

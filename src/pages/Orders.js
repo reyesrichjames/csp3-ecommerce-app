@@ -16,7 +16,7 @@ export default function Orders() {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch('https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/orders/my-orders', {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/orders/my-orders`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -50,7 +50,7 @@ export default function Orders() {
       const productDetails = {};
       await Promise.all(
         Array.from(productIds).map(async (productId) => {
-          const response = await fetch(`https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/products/${productId}`);
+          const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/products/${productId}`);
           const data = await response.json();
           productDetails[productId] = data;
         })

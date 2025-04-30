@@ -25,7 +25,7 @@ export default function Cart() {
 
   const fetchCart = async () => {
     try {
-      const response = await fetch('https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/cart/get-cart', {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/cart/get-cart`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -49,7 +49,7 @@ export default function Cart() {
       const productDetails = {};
       await Promise.all(
         cart.cartItems.map(async (item) => {
-          const response = await fetch(`https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/products/${item.productId}`);
+          const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/products/${item.productId}`);
           const data = await response.json();
           productDetails[item.productId] = data;
         })
@@ -70,7 +70,7 @@ export default function Cart() {
     if (newQuantity < 1) return;
 
     try {
-      const response = await fetch('https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/cart/update-cart-quantity', {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/cart/update-cart-quantity`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ export default function Cart() {
 
   const handleRemoveItem = async (productId) => {
       try {
-        const response = await fetch(`https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/cart/${productId}/remove-from-cart`, {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/cart/${productId}/remove-from-cart`, {
           method: 'PATCH',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -129,7 +129,7 @@ export default function Cart() {
 
     const handleClearCart = async () => {
        try {
-         const response = await fetch('https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/cart/clear-cart', {
+         const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/cart/clear-cart`, {
            method: 'PUT',
            headers: {
              'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -169,7 +169,7 @@ export default function Cart() {
 
        const handleCheckout = async () => {
            try {
-             const response = await fetch('https://34vyi1b8ge.execute-api.us-west-2.amazonaws.com/production/orders/checkout', {
+             const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/orders/checkout`, {
                method: 'POST',
                headers: {
                  'Authorization': `Bearer ${localStorage.getItem('token')}`
