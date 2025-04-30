@@ -7,6 +7,9 @@ Profile page with reset password - Reyes
 Home Page - Reyes
 Full Responsiveness - Reyes
 Images - Reyes
+Cart - Reyes
+Order - Reyes
+Show order history admin - Reyes
 
 # Getting Started with Create React App
 
