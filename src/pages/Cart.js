@@ -161,8 +161,18 @@ export default function Cart() {
        if (!cart || !cart.cartItems || cart.cartItems.length === 0) {
          return (
            <Container className="mt-5 text-center">
-             
-             <p className="h4 mb-4">Your cart is empty! <Link to="/products">Start shopping</Link>.</p>
+             <p className="h4 mb-4">
+               Your cart is empty! <Link 
+                 to="/products" 
+                 style={{ 
+                   color: '#0d6efd', 
+                   textDecoration: 'underline', 
+                   fontWeight: 'bold' 
+                 }}
+               >
+                 Start shopping
+               </Link>.
+             </p>
            </Container>
          );
        }
