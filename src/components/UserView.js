@@ -144,32 +144,33 @@ export default function UserView({ productsData = [] }) {
           </Accordion.Header>
           <Accordion.Body>
             <Form className="compact-form">
-              {/* Product Name with Search button */}
-              <Form.Group className="mb-3">
+              {/* Product Name field */}
+              <Form.Group className="mb-2">
                 <Form.Label className="mb-1 small">Product Name:</Form.Label>
-                <div className="d-flex">
-                  <Form.Control
-                    type="text"
-                    value={productName}
-                    onChange={(e) => setProductName(e.target.value)}
-                    size="sm"
-                    className="me-2"
-                  />
-                  <Button 
-                    variant="primary" 
-                    size="sm"
-                    onClick={handleSearchByName}
-                    style={searchButtonStyle}
-                  >
-                    Search by Name
-                  </Button>
-                </div>
+                <Form.Control
+                  type="text"
+                  value={productName}
+                  onChange={(e) => setProductName(e.target.value)}
+                  size="sm"
+                />
               </Form.Group>
+              
+              {/* Search by Name button on a single line */}
+              <div className="mb-3">
+                <Button 
+                  variant="primary" 
+                  size="sm"
+                  onClick={handleSearchByName}
+                  style={searchButtonStyle}
+                >
+                  Search by Name
+                </Button>
+              </div>
 
-              {/* Price Range with Search button */}
-              <Form.Group className="mb-3">
-                <div className="d-flex justify-content-between align-items-end">
-                  <div style={{ width: '45%' }}>
+              {/* Price Range section - smaller and aligned left */}
+              <Row className="mb-2">
+                <Col xs={4}>
+                  <Form.Group>
                     <Form.Label className="mb-1 small">Min Price:</Form.Label>
                     <div className="d-flex">
                       <Button 
@@ -194,9 +195,11 @@ export default function UserView({ productsData = [] }) {
                         +
                       </Button>
                     </div>
-                  </div>
-                  
-                  <div style={{ width: '45%' }}>
+                  </Form.Group>
+                </Col>
+                
+                <Col xs={4}>
+                  <Form.Group>
                     <Form.Label className="mb-1 small">Max Price:</Form.Label>
                     <div className="d-flex">
                       <Button 
@@ -221,29 +224,30 @@ export default function UserView({ productsData = [] }) {
                         +
                       </Button>
                     </div>
-                  </div>
-                </div>
-                
-                <div className="d-flex justify-content-between mt-2">
-                  <Button 
-                    variant="primary" 
-                    size="sm"
-                    onClick={handleSearchByPrice}
-                    style={searchButtonStyle}
-                    className="me-1"
-                  >
-                    Search by Price
-                  </Button>
-                  <Button 
-                    variant="danger" 
-                    size="sm"
-                    onClick={handleClear}
-                    style={searchButtonStyle}
-                  >
-                    Clear
-                  </Button>
-                </div>
-              </Form.Group>
+                  </Form.Group>
+                </Col>
+              </Row>
+              
+              {/* Search by Price and Clear buttons */}
+              <div className="d-flex mt-2">
+                <Button 
+                  variant="primary" 
+                  size="sm"
+                  onClick={handleSearchByPrice}
+                  style={searchButtonStyle}
+                  className="me-2"
+                >
+                  Search by Price
+                </Button>
+                <Button 
+                  variant="danger" 
+                  size="sm"
+                  onClick={handleClear}
+                  style={searchButtonStyle}
+                >
+                  Clear
+                </Button>
+              </div>
             </Form>
           </Accordion.Body>
         </Accordion.Item>
