@@ -373,80 +373,80 @@ export default function AdminDashboard({ productsData, fetchData }) {
         };
 
       return (
-        <Container style={tableStyles.container}>
-      <div style={tableStyles.header}>
-        <h1 style={tableStyles.title}>Admin Dashboard</h1>
-        <div style={tableStyles.buttonGroup}>
-          <Button 
-            variant="primary" 
-            onClick={handleShow}
-            style={tableStyles.headerButton}
-          >
-            Add New Product
-          </Button>
-          <Button 
-            variant={showOrders ? "danger" : "success"}
-            style={tableStyles.headerButton}
-            onClick={toggleView}
-          >
-            {showOrders ? 'Show Product Details' : 'Show User Orders'}
-          </Button>
-        </div>
-      </div>
+        <>
+          <Container style={tableStyles.container}>
+            <div style={tableStyles.header}>
+              <h1 style={tableStyles.title}>Admin Dashboard</h1>
+              <div style={tableStyles.buttonGroup}>
+                <Button 
+                  variant="primary" 
+                  onClick={handleShow}
+                  style={tableStyles.headerButton}
+                >
+                  Add New Product
+                </Button>
+                <Button 
+                  variant={showOrders ? "danger" : "success"}
+                  style={tableStyles.headerButton}
+                  onClick={toggleView}
+                >
+                  {showOrders ? 'Show Product Details' : 'Show User Orders'}
+                </Button>
+              </div>
+            </div>
 
-      {showOrders ? (
-        <div className="mt-4">
-          {Object.entries(allOrders).map(([userEmail, userOrders]) => (
-            <Card key={userEmail} className="mb-3">
-              <Card.Header
-                className="bg-dark text-white"
-                style={{ cursor: 'pointer' }}
-                onClick={() => toggleUserOrders(userEmail)}
-              >
-                Orders for: {userEmail}
-              </Card.Header>
-              <Collapse in={expandedUsers[userEmail]}>
-                <Card.Body>
-                  {userOrders.map((order) => (
-                    <div key={order._id} className="mb-3">
-                      <div className="mb-2">
-                        Purchased on {formatDate(order.orderedOn)}:
-                      </div>
-                      <ul style={{ listStyleType: 'circle', paddingLeft: '20px' }}>
-                        {order.productsOrdered.map((product) => (
-                          <li key={product._id}>
-                            Quantity: {product.quantity}
-                            <div style={{ color: '#666' }}>
-                              Subtotal: ₱{product.subtotal}
+            {showOrders ? (
+              <div className="mt-4">
+                {Object.entries(allOrders).map(([userEmail, userOrders]) => (
+                  <Card key={userEmail} className="mb-3">
+                    <Card.Header
+                      className="bg-dark text-white"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => toggleUserOrders(userEmail)}
+                    >
+                      Orders for: {userEmail}
+                    </Card.Header>
+                    <Collapse in={expandedUsers[userEmail]}>
+                      <Card.Body>
+                        {userOrders.map((order) => (
+                          <div key={order._id} className="mb-3">
+                            <div className="mb-2">
+                              Purchased on {formatDate(order.orderedOn)}:
                             </div>
-                          </li>
+                            <ul style={{ listStyleType: 'circle', paddingLeft: '20px' }}>
+                              {order.productsOrdered.map((product) => (
+                                <li key={product._id}>
+                                  Quantity: {product.quantity}
+                                  <div style={{ color: '#666' }}>
+                                    Subtotal: ₱{product.subtotal}
+                                  </div>
+                                </li>
+                              ))}
+                            </ul>
+                            <div style={{ color: '#ff6b6b', fontWeight: 'bold' }}>
+                              Total: ₱{order.totalPrice}
+                            </div>
+                          </div>
                         ))}
-                      </ul>
-                      <div style={{ color: '#ff6b6b', fontWeight: 'bold' }}>
-                        Total: ₱{order.totalPrice}
-                      </div>
-                    </div>
-                  ))}
-                </Card.Body>
-              </Collapse>
-            </Card>
-          ))}
-        </div>
-      ) : (
-      <>
-
-          <Table striped bordered hover responsive style={tableStyles.table}>
-            <thead>
-              <tr style={tableStyles.tableHeader}>
-                <th style={{width: '25%'}}>Name</th>
-                <th className="d-none d-lg-table-cell" style={{width: '45%'}}>Description</th>
-                {/* Remove the View header for tablet view */}
-                <th className="d-lg-none d-sm-none" style={{width: '15%', textAlign: 'center'}}>View</th>
-                <th style={{width: '25%', textAlign: 'center'}}>Price</th>
-                <th className="d-none d-sm-table-cell" style={{width: '25%', textAlign: 'center'}}>Availability</th>
-                <th className="d-none d-sm-table-cell" style={{width: '25%', textAlign: 'center'}}>Actions</th>
-              </tr>
-            </thead>
+                      </Card.Body>
+                    </Collapse>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <>
+                <Table striped bordered hover responsive style={tableStyles.table}>
+                  <thead>
+                    <tr style={tableStyles.tableHeader}>
+                      <th style={{width: '25%'}}>Name</th>
+                      <th className="d-none d-lg-table-cell" style={{width: '45%'}}>Description</th>
+                      {/* Remove the View header for tablet view */}
+                      <th className="d-lg-none d-sm-none" style={{width: '15%', textAlign: 'center'}}>View</th>
+                      <th style={{width: '25%', textAlign: 'center'}}>Price</th>
+                      <th className="d-none d-sm-table-cell" style={{width: '25%', textAlign: 'center'}}>Availability</th>
+                      <th className="d-none d-sm-table-cell" style={{width: '25%', textAlign: 'center'}}>Actions</th>
+                    </tr>
+                  </thead>
                   <tbody>
                     {products.map(product => (
                       <tr key={product._id}>
@@ -565,13 +565,17 @@ export default function AdminDashboard({ productsData, fetchData }) {
                   </tbody>
                 </Table>
 
-                {/* Add Description Modal */}
+                {/* Description Modal */}
                 <DescriptionModal 
-                        show={showDescription}
-                        handleClose={() => setShowDescription(false)}
-                        description={selectedDescription}
-                      />
+                  show={showDescription}
+                  handleClose={() => setShowDescription(false)}
+                  description={selectedDescription}
+                />
+              </>
+            )}
+          </Container>
 
+          {/* Update Modal */}
           <Modal show={showUpdateModal} onHide={handleUpdateClose}>
             <Modal.Header closeButton>
               <Modal.Title>Update Product</Modal.Title>
@@ -644,6 +648,7 @@ export default function AdminDashboard({ productsData, fetchData }) {
             </Form>
           </Modal>
 
+          {/* Add Product Modal */}
           <Modal show={showModal} onHide={handleClose}>
             <Modal.Header closeButton>
               <Modal.Title>Add New Product</Modal.Title>
@@ -697,8 +702,6 @@ export default function AdminDashboard({ productsData, fetchData }) {
               </Modal.Footer>
             </Form>
           </Modal>
-          </>
-          )}
-        </Container>
+        </>
       );
     }
