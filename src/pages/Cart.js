@@ -206,95 +206,194 @@ export default function Cart() {
          };
 
   return (
-      <Container className="mt-5">
-        <h2 className="mb-4 text-center">Your Shopping Cart</h2>
-        <Card style={{ borderRadius: 0 }}>
-          <Table responsive bordered>
-            <thead className="bg-dark text-white">
-              <tr>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Subtotal</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cart.cartItems.map((item) => {
-                const product = products[item.productId] || {};
-                return (
-                  <tr key={item._id}>
-                    <td>
-                      <Link to={`/products/${item.productId}`} className="text-primary">
-                        {product.name || 'Loading...'}
-                      </Link>
-                    </td>
-                    <td>₱{product.price || '...'}</td>
-                    <td>
-                      <div className="d-flex align-items-center">
+    <Container className="mt-5">
+      <div className="card" style={{ borderRadius: '0' }}>
+        <div 
+          className="card-header text-center text-white py-2" 
+          style={{ backgroundColor: '#373a3c', borderRadius: '0' }}
+        >
+          <h4 className="mb-0" style={{ fontSize: '1.5rem' }}>Your Shopping Cart</h4>
+        </div>
+        <div className="card-body p-0">
+          {/* Desktop view */}
+          <div className="d-none d-md-block">
+            <Table responsive bordered className="mb-0">
+              <thead style={{ backgroundColor: '#373a3c', color: 'white' }}>
+                <tr>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Subtotal</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {cart.cartItems.map((item) => {
+                  const product = products[item.productId] || {};
+                  return (
+                    <tr key={item._id}>
+                      <td>
+                        <Link to={`/products/${item.productId}`} className="text-primary">
+                          {product.name || 'Loading...'}
+                        </Link>
+                      </td>
+                      <td>₱{product.price || '...'}</td>
+                      <td>
+                        <div className="d-flex align-items-center">
+                          <Button
+                            variant="dark"
+                            size="sm"
+                            className="me-2"
+                            style={{ 
+                              borderRadius: 0, 
+                              width: '30px', 
+                              height: '30px',
+                              padding: 0,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontSize: '0.8rem'
+                            }}
+                            onClick={() => handleQuantityChange(item.productId, item.quantity, 'decrease')}
+                          >
+                            -
+                          </Button>
+                          <span>{item.quantity}</span>
+                          <Button
+                            variant="dark"
+                            size="sm"
+                            className="ms-2"
+                            style={{ 
+                              borderRadius: 0, 
+                              width: '30px', 
+                              height: '30px',
+                              padding: 0,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontSize: '0.8rem'
+                            }}
+                            onClick={() => handleQuantityChange(item.productId, item.quantity, 'increase')}
+                          >
+                            +
+                          </Button>
+                        </div>
+                      </td>
+                      <td>₱{item.subtotal}</td>
+                      <td>
                         <Button
-                          variant="dark"
+                          variant="danger"
                           size="sm"
-                          className="me-2"
-                          style={{ borderRadius: 0, width: '38px', height: '38px' }}
-                          onClick={() => handleQuantityChange(item.productId, item.quantity, 'decrease')}
+                          style={{ borderRadius: 0 }}
+                          onClick={() => handleRemoveItem(item.productId)}
                         >
-                          -
+                          Remove
                         </Button>
-                        <span>{item.quantity}</span>
-                        <Button
-                          variant="dark"
-                          size="sm"
-                          className="ms-2"
-                          style={{ borderRadius: 0, width: '38px', height: '38px' }}
-                          onClick={() => handleQuantityChange(item.productId, item.quantity, 'increase')}
-                        >
-                          +
-                        </Button>
-                      </div>
-                    </td>
-                    <td>₱{item.subtotal}</td>
-                    <td>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+          </div>
+          
+          {/* Mobile view */}
+          <div className="d-md-none">
+            {cart.cartItems.map((item) => {
+              const product = products[item.productId] || {};
+              return (
+                <div key={item._id} className="p-3 border-bottom">
+                  <div className="mb-2">
+                    <Link to={`/products/${item.productId}`} className="text-primary">
+                      <strong>{product.name || 'Loading...'}</strong>
+                    </Link>
+                  </div>
+                  <div className="mb-2">
+                    <strong>Price:</strong> ₱{product.price || '...'}
+                  </div>
+                  <div className="mb-2">
+                    <strong>Quantity:</strong>
+                    <div className="d-flex align-items-center mt-1">
                       <Button
-                        variant="danger"
+                        variant="dark"
                         size="sm"
-                        style={{ borderRadius: 0 }}
-                        onClick={() => handleRemoveItem(item.productId)}
+                        className="me-2"
+                        style={{ 
+                          borderRadius: 0, 
+                          width: '30px', 
+                          height: '30px',
+                          padding: 0,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '0.8rem'
+                        }}
+                        onClick={() => handleQuantityChange(item.productId, item.quantity, 'decrease')}
                       >
-                        Remove
+                        -
                       </Button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </Table>
-        </Card>
-
-        <Card className="mt-3" style={{ borderRadius: 0, backgroundColor: '#f8f9fa' }}>
-          <Card.Body>
-            <div className="d-flex justify-content-between align-items-center">
-              <h3 style={{ color: '#FF6B00' }}>Total: ₱{cart.totalPrice}</h3>
-              <div>
-                <Button
-                  variant="primary"
-                  className="me-2"
-                  style={{ borderRadius: 0 }}
-                  onClick={handleCheckout}
-                >
-                  Checkout
-                </Button>
-                <Button
-                  variant="danger"
-                  style={{ borderRadius: 0 }}
-                  onClick={handleClearCart}
-                >
-                  Clear Cart
-                </Button>
-              </div>
+                      <span>{item.quantity}</span>
+                      <Button
+                        variant="dark"
+                        size="sm"
+                        className="ms-2"
+                        style={{ 
+                          borderRadius: 0, 
+                          width: '30px', 
+                          height: '30px',
+                          padding: 0,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '0.8rem'
+                        }}
+                        onClick={() => handleQuantityChange(item.productId, item.quantity, 'increase')}
+                      >
+                        +
+                      </Button>
+                    </div>
+                  </div>
+                  <div className="mb-2">
+                    <strong>Subtotal:</strong> ₱{item.subtotal}
+                  </div>
+                  <div>
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      style={{ borderRadius: 0 }}
+                      onClick={() => handleRemoveItem(item.productId)}
+                    >
+                      Remove
+                    </Button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <div className="card-footer" style={{ backgroundColor: '#f8f9fa', borderRadius: '0' }}>
+          <div className="d-flex justify-content-between align-items-center">
+            <h3 style={{ color: '#FF6B00' }}>Total: ₱{cart.totalPrice}</h3>
+            <div>
+              <Button
+                variant="primary"
+                className="me-2"
+                style={{ borderRadius: 0 }}
+                onClick={handleCheckout}
+              >
+                Checkout
+              </Button>
+              <Button
+                variant="danger"
+                style={{ borderRadius: 0 }}
+                onClick={handleClearCart}
+              >
+                Clear Cart
+              </Button>
             </div>
-          </Card.Body>
-        </Card>
-      </Container>
+          </div>
+        </div>
+      </div>
+    </Container>
   );
 }
