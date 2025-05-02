@@ -39,7 +39,8 @@ export default function AdminDashboard({ productsData, fetchData }) {
   const [newProduct, setNewProduct] = useState({
     name: '',
     description: '',
-    price: ''
+    price: '',
+    imageUrl: ''
   });
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
@@ -150,7 +151,8 @@ export default function AdminDashboard({ productsData, fetchData }) {
     const productData = {
       name: newProduct.name,
       description: newProduct.description,
-      price: parseFloat(newProduct.price)
+      price: parseFloat(newProduct.price),
+      imageUrl: newProduct.imageUrl // Add imageUrl to the product data
     };
 
     try {
@@ -298,11 +300,7 @@ export default function AdminDashboard({ productsData, fetchData }) {
             return;
           }
 
-          // Validate image URL if provided
-          if (productToUpdate.imageUrl && !productToUpdate.imageUrl.includes('postimg.cc')) {
-            notyf.error('Image URL must be from postimg.cc');
-            return;
-          }
+          // Removed the postimg.cc validation
 
           try {
             const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/products/${productToUpdate._id}/update`, {
@@ -622,16 +620,13 @@ export default function AdminDashboard({ productsData, fetchData }) {
                   <Form.Label>Product Image Link</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Enter postimg.cc URL for product thumbnail"
+                    placeholder="Enter image URL for product thumbnail"
                     value={productToUpdate.imageUrl}
                     onChange={(e) => setProductToUpdate({
                       ...productToUpdate, 
                       imageUrl: e.target.value
                     })}
                   />
-                  <Form.Text className="text-muted">
-                    Image URL must be from postimg.cc
-                  </Form.Text>
                 </Form.Group>
               </Modal.Body>
               <Modal.Footer style={tableStyles.modal.footer}>
@@ -680,9 +675,21 @@ export default function AdminDashboard({ productsData, fetchData }) {
                   <Form.Label>Price</Form.Label>
                   <Form.Control
                     type="number"
-                    placeholder="0"
+                    step="0.01"
+                    min="0"
+                    placeholder="Enter price"
                     value={newProduct.price}
                     onChange={(e) => setNewProduct({...newProduct, price: e.target.value})}
+                  />
+                </Form.Group>
+
+                <Form.Group>
+                  <Form.Label>Product Image Link</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter image URL for product thumbnail"
+                    value={newProduct.imageUrl || ''}
+                    onChange={(e) => setNewProduct({...newProduct, imageUrl: e.target.value})}
                   />
                 </Form.Group>
               </Modal.Body>
