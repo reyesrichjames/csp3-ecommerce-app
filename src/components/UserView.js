@@ -6,7 +6,7 @@ export default function UserView({ productsData = [] }) {
   const [products, setProducts] = useState([]);
   const [productName, setProductName] = useState('');
   const [minPrice, setMinPrice] = useState('0');
-  const [maxPrice, setMaxPrice] = useState('100000');
+  const [maxPrice, setMaxPrice] = useState('10000'); // Changed default max price to 10000
 
   useEffect(() => {
     setProducts(productsData);
@@ -168,66 +168,62 @@ export default function UserView({ productsData = [] }) {
                 </Button>
               </div>
 
-              {/* Price Range section - smaller and aligned left */}
-              <Row className="mb-2">
-                <Col xs={4}>
-                  <Form.Group>
-                    <Form.Label className="mb-1 small">Min Price:</Form.Label>
-                    <div className="d-flex">
-                      <Button 
-                        style={{...priceButtonStyle, height: '31px'}}
-                        onClick={() => decrementPrice(setMinPrice, minPrice)}
-                        size="sm"
-                      >
-                        -
-                      </Button>
-                      <Form.Control
-                        type="text"
-                        value={minPrice}
-                        onChange={(e) => handlePriceChange(setMinPrice, e.target.value)}
-                        style={{...priceInputStyle, height: '31px'}}
-                        size="sm"
-                      />
-                      <Button 
-                        style={{...priceButtonStyle, height: '31px'}}
-                        onClick={() => incrementPrice(setMinPrice, minPrice)}
-                        size="sm"
-                      >
-                        +
-                      </Button>
-                    </div>
-                  </Form.Group>
-                </Col>
+              {/* Price Range section - both fields side by side on the left */}
+              <div className="d-flex mb-3" style={{ maxWidth: '400px' }}>
+                <div className="me-3">
+                  <Form.Label className="mb-1 small">Min Price:</Form.Label>
+                  <div className="d-flex">
+                    <Button 
+                      style={{...priceButtonStyle, height: '31px'}}
+                      onClick={() => decrementPrice(setMinPrice, minPrice)}
+                      size="sm"
+                    >
+                      -
+                    </Button>
+                    <Form.Control
+                      type="text"
+                      value={minPrice}
+                      onChange={(e) => handlePriceChange(setMinPrice, e.target.value)}
+                      style={{...priceInputStyle, height: '31px'}}
+                      size="sm"
+                    />
+                    <Button 
+                      style={{...priceButtonStyle, height: '31px'}}
+                      onClick={() => incrementPrice(setMinPrice, minPrice)}
+                      size="sm"
+                    >
+                      +
+                    </Button>
+                  </div>
+                </div>
                 
-                <Col xs={4}>
-                  <Form.Group>
-                    <Form.Label className="mb-1 small">Max Price:</Form.Label>
-                    <div className="d-flex">
-                      <Button 
-                        style={{...priceButtonStyle, height: '31px'}}
-                        onClick={() => decrementPrice(setMaxPrice, maxPrice)}
-                        size="sm"
-                      >
-                        -
-                      </Button>
-                      <Form.Control
-                        type="text"
-                        value={maxPrice}
-                        onChange={(e) => handlePriceChange(setMaxPrice, e.target.value)}
-                        style={{...priceInputStyle, height: '31px'}}
-                        size="sm"
-                      />
-                      <Button 
-                        style={{...priceButtonStyle, height: '31px'}}
-                        onClick={() => incrementPrice(setMaxPrice, maxPrice)}
-                        size="sm"
-                      >
-                        +
-                      </Button>
-                    </div>
-                  </Form.Group>
-                </Col>
-              </Row>
+                <div>
+                  <Form.Label className="mb-1 small">Max Price:</Form.Label>
+                  <div className="d-flex">
+                    <Button 
+                      style={{...priceButtonStyle, height: '31px'}}
+                      onClick={() => decrementPrice(setMaxPrice, maxPrice)}
+                      size="sm"
+                    >
+                      -
+                    </Button>
+                    <Form.Control
+                      type="text"
+                      value={maxPrice}
+                      onChange={(e) => handlePriceChange(setMaxPrice, e.target.value)}
+                      style={{...priceInputStyle, height: '31px'}}
+                      size="sm"
+                    />
+                    <Button 
+                      style={{...priceButtonStyle, height: '31px'}}
+                      onClick={() => incrementPrice(setMaxPrice, maxPrice)}
+                      size="sm"
+                    >
+                      +
+                    </Button>
+                  </div>
+                </div>
+              </div>
               
               {/* Search by Price and Clear buttons */}
               <div className="d-flex mt-2">
