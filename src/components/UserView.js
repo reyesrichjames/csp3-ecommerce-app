@@ -114,7 +114,7 @@ export default function UserView({ productsData = [] }) {
     transition: 'margin-top 0.3s ease'
   };
   
-  // Custom styles to remove blue outline on accordion
+  // Custom styles to remove blue outline on accordion and fix spacing
   const customAccordionStyles = `
     .accordion-button:focus {
       box-shadow: none !important;
@@ -125,6 +125,13 @@ export default function UserView({ productsData = [] }) {
       background-color: #f8f9fa;
       box-shadow: none;
     }
+    .accordion-body {
+      padding-top: 0.5rem !important;
+    }
+    .accordion-button {
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+    }
   `;
   
   return (
@@ -132,10 +139,10 @@ export default function UserView({ productsData = [] }) {
       <style>{customAccordionStyles}</style>
       <Accordion className="mb-4" style={accordionStyle}>
         <Accordion.Item eventKey="0" className="border">
-          <Accordion.Header className="py-2">
+          <Accordion.Header>
             <span className="fw-bold">Product Search</span>
           </Accordion.Header>
-          <Accordion.Body className="py-3 px-3">
+          <Accordion.Body>
             <Form className="compact-form">
               <Form.Group className="mb-2">
                 <Form.Label className="mb-1 small">Product Name:</Form.Label>
