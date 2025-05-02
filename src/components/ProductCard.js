@@ -22,35 +22,22 @@ export default function ProductCard({ productProp }) {
               alignItems: 'center',
               margin: '10px 0',
               width: '100%',
-              height: '200px' // Fixed container height
+              height: '200px'
             }}>
-              <a 
-                href={`https://postimg.cc/${imageUrl.split('/').find(segment => segment.length > 7)}`} 
-                target='_blank' 
-                rel="noopener noreferrer"
+              <img 
+                src={imageUrl}
+                alt={name}
                 style={{
-                  width: '100%',
-                  height: '100%',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center'
+                  maxWidth: '100%',
+                  maxHeight: '100%',
+                  objectFit: 'contain',
+                  backgroundColor: 'white'
                 }}
-              >
-                <img 
-                  src={imageUrl}
-                  alt={name}
-                  style={{
-                    maxWidth: '100%',
-                    maxHeight: '100%',
-                    objectFit: 'contain',
-                    backgroundColor: 'white'
-                  }}
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.style.display = 'none';
-                  }}
-                />
-              </a>
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.style.display = 'none';
+                }}
+              />
             </div>
           )}
           <Card.Body className="flex-grow-1">    

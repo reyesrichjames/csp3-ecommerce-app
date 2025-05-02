@@ -459,27 +459,21 @@ export default function AdminDashboard({ productsData, fetchData }) {
                               margin: '10px 0',
                               width: '100%' // Match parent width
                             }}>
-                              <a 
-                                href={`https://postimg.cc/${product.imageUrl.split('/').find(segment => segment.length > 7)}`} 
-                                target='_blank' 
-                                rel="noopener noreferrer"
-                              >
-                                <img 
-                                  src={product.imageUrl}
-                                  alt={product.name}
-                                  style={{
-                                    width: '100%', // Take full width of parent
-                                    height: 'auto', // Maintain aspect ratio
-                                    maxHeight: '200px', // Maximum height
-                                    objectFit: 'contain', // Ensure whole image is visible
-                                    backgroundColor: 'white'
-                                  }}
-                                  onError={(e) => {
-                                    e.target.onerror = null; // Prevent infinite loop
-                                    e.target.style.display = 'none'; // Hide broken images
-                                  }}
-                                />
-                              </a>
+                              <img 
+                                src={product.imageUrl}
+                                alt={product.name}
+                                style={{
+                                  width: '100%', // Take full width of parent
+                                  height: 'auto', // Maintain aspect ratio
+                                  maxHeight: '200px', // Maximum height
+                                  objectFit: 'contain', // Ensure whole image is visible
+                                  backgroundColor: 'white'
+                                }}
+                                onError={(e) => {
+                                  e.target.onerror = null; // Prevent infinite loop
+                                  e.target.style.display = 'none'; // Hide broken images
+                                }}
+                              />
                             </div>
                           )}
                          

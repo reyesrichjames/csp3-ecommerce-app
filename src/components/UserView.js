@@ -197,9 +197,9 @@ export default function UserView({ productsData = [] }) {
       <h2 className="text-center mb-5 my-5">Our Products</h2>
       
       <Row>
-        {products.map(products => (
-          <Col xs={12} md={6} lg={4} key={products._id} className="mb-4">
-            <ProductCard productProp={products} />
+        {products.map(product => (
+          <Col xs={12} md={6} lg={4} key={product._id} className="mb-4">
+            <ProductCard productProp={product} />
           </Col>
         ))}
       </Row>
