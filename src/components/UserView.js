@@ -88,7 +88,8 @@ export default function UserView({ productsData = [] }) {
 
   const priceInputStyle = {
     borderRadius: 0,
-    textAlign: 'left'
+    textAlign: 'left',
+    width: '60px' // Reduced width to make it half the size
   };
 
   const priceButtonStyle = {
@@ -105,7 +106,7 @@ export default function UserView({ productsData = [] }) {
 
   const searchButtonStyle = {
      borderRadius: 0
-   };
+  };
 
   // Updated accordion style with more top margin to accommodate navbar expansion
   const accordionStyle = {
