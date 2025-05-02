@@ -26,6 +26,7 @@ const DescriptionModal = ({ show, handleClose, description }) => (
     </Modal>
   );
 
+
 export default function AdminDashboard({ productsData, fetchData }) {
   const { user } = useContext(UserContext);
   const notyf = new Notyf();
