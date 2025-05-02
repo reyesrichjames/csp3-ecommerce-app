@@ -88,7 +88,6 @@ export default function Orders() {
   if (!orders || orders.length === 0) {
     return (
       <Container className="mt-5 text-center">
-        <h2 className="mb-4">Order History</h2>
         <p className="h4 mb-4">No orders placed yet! <Link to="/products">Start shopping</Link>.</p>
       </Container>
     );
@@ -98,10 +97,10 @@ export default function Orders() {
     <Container className="mt-5">
       <h2 className="text-center mb-4">Order History</h2>
       {orders.map((order, index) => (
-        <Card key={order._id} className="mb-4">
+        <Card key={order._id} className="mb-4" style={{ borderRadius: 0 }}>
           <Card.Header 
             className="bg-dark text-white" 
-            style={{ cursor: 'pointer' }}
+            style={{ cursor: 'pointer', borderRadius: 0 }}
             onClick={() => toggleOrderDetails(order._id)}
           >
             Order #{index + 1} - Purchased on: {formatDate(order.orderedOn)} (Click for Details)
@@ -117,7 +116,8 @@ export default function Orders() {
                       color: '#0d6efd',
                       textDecoration: 'underline',
                       marginBottom: '8px',
-                      display: 'inline-block'
+                      display: 'inline-block',
+                      borderRadius: 0
                     }}
                   >
                     {products[product.productId]?.name || 'Loading...'}

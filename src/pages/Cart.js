@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Table, Button } from 'react-bootstrap';
+import { Container, Table, Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Notyf } from 'notyf';
 
@@ -207,83 +207,94 @@ export default function Cart() {
 
   return (
       <Container className="mt-5">
-        <h2 className="mb-4">Your Shopping Cart</h2>
-        <Table responsive striped bordered>
-          <thead className="bg-dark text-white">
-            <tr>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Quantity</th>
-              <th>Subtotal</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {cart.cartItems.map((item) => {
-              const product = products[item.productId] || {};
-              return (
-                <tr key={item._id}>
-                  <td>
-                    <Link to={`/products/${item.productId}`} className="text-primary">
-                      {product.name || 'Loading...'}
-                    </Link>
-                  </td>
-                  <td>₱{product.price || '...'}</td>
-                  <td>
-                    <div className="d-flex align-items-center">
+        <h2 className="mb-4 text-center">Your Shopping Cart</h2>
+        <Card style={{ borderRadius: 0 }}>
+          <Table responsive bordered>
+            <thead className="bg-dark text-white">
+              <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cart.cartItems.map((item) => {
+                const product = products[item.productId] || {};
+                return (
+                  <tr key={item._id}>
+                    <td>
+                      <Link to={`/products/${item.productId}`} className="text-primary">
+                        {product.name || 'Loading...'}
+                      </Link>
+                    </td>
+                    <td>₱{product.price || '...'}</td>
+                    <td>
+                      <div className="d-flex align-items-center">
+                        <Button
+                          variant="dark"
+                          size="sm"
+                          className="me-2"
+                          style={{ borderRadius: 0, width: '38px', height: '38px' }}
+                          onClick={() => handleQuantityChange(item.productId, item.quantity, 'decrease')}
+                        >
+                          -
+                        </Button>
+                        <span>{item.quantity}</span>
+                        <Button
+                          variant="dark"
+                          size="sm"
+                          className="ms-2"
+                          style={{ borderRadius: 0, width: '38px', height: '38px' }}
+                          onClick={() => handleQuantityChange(item.productId, item.quantity, 'increase')}
+                        >
+                          +
+                        </Button>
+                      </div>
+                    </td>
+                    <td>₱{item.subtotal}</td>
+                    <td>
                       <Button
-                        variant="secondary"
+                        variant="danger"
                         size="sm"
-                        className="me-2"
-                        onClick={() => handleQuantityChange(item.productId, item.quantity, 'decrease')}
+                        style={{ borderRadius: 0 }}
+                        onClick={() => handleRemoveItem(item.productId)}
                       >
-                        -
+                        Remove
                       </Button>
-                      <span>{item.quantity}</span>
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        className="ms-2"
-                        onClick={() => handleQuantityChange(item.productId, item.quantity, 'increase')}
-                      >
-                        +
-                      </Button>
-                    </div>
-                  </td>
-                  <td>₱{item.subtotal}</td>
-                  <td>
-                    <Button
-                      variant="danger"
-                      size="sm"
-                      onClick={() => handleRemoveItem(item.productId)}
-                    >
-                      Remove
-                    </Button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </Table>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
+        </Card>
 
-        <div className="d-flex justify-content-between align-items-center mt-4">
-        <h3>Total: ₱{cart.totalPrice}</h3>
-        <div>
-          <Button
-            variant="success"
-            className="me-2"
-            onClick={handleCheckout}
-          >
-            Checkout
-          </Button>
-          <Button
-            variant="danger"
-            onClick={handleClearCart}
-          >
-            Clear Cart
-          </Button>
-        </div>
-      </div>
-    </Container>
+        <Card className="mt-3" style={{ borderRadius: 0, backgroundColor: '#f8f9fa' }}>
+          <Card.Body>
+            <div className="d-flex justify-content-between align-items-center">
+              <h3 style={{ color: '#FF6B00' }}>Total: ₱{cart.totalPrice}</h3>
+              <div>
+                <Button
+                  variant="primary"
+                  className="me-2"
+                  style={{ borderRadius: 0 }}
+                  onClick={handleCheckout}
+                >
+                  Checkout
+                </Button>
+                <Button
+                  variant="danger"
+                  style={{ borderRadius: 0 }}
+                  onClick={handleClearCart}
+                >
+                  Clear Cart
+                </Button>
+              </div>
+            </div>
+          </Card.Body>
+        </Card>
+      </Container>
   );
 }

@@ -63,53 +63,46 @@ export default function Profile() {
   }
 
   return (
-    <div style={{ position: 'relative' }}>
-      <Container className="mt-5">
-        <Row className="justify-content-center">
-          <Col md={6}>
-            <Card className="text-white bg-primary mb-3">
-              <Card.Body>
-                <Card.Title className="mb-4">Profile</Card.Title>
-                {details && (
-                  <>
-                    <Card.Text className="mb-4">
-                      <strong>{details.firstName} {details.lastName}</strong>
-                    </Card.Text>
-                    <hr className="bg-light" />
-                    <Card.Text className="mt-4">
-                      <strong>Contacts</strong>
-                    </Card.Text>
-                    <ul>
-                      <li>Email: {details.email}</li>
-                      <li>Mobile No: {details.mobileNo}</li>
-                    </ul>
-                  </>
-                )}
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
-
-      <Button 
-        style={{ 
-          backgroundColor: '#8B008B',
-          border: 'none',
-          position: 'fixed',
-          left: '0',
-          marginLeft: '0',
-          top: '450px',
-          zIndex: 1000,
-          borderRadius: '0'
-        }}
-        onClick={() => setShowResetPassword(true)}
-      >
-        Reset Password
-      </Button>
+    <Container className="mt-5">
+      <Row className="justify-content-center">
+        <Col md={6}>
+          <Card style={{ borderRadius: 0 }}>
+            <Card.Header className="bg-dark text-white">
+              <h4 className="mb-0">Profile</h4>
+            </Card.Header>
+            <Card.Body>
+              {details && (
+                <>
+                  <Card.Text className="mb-4">
+                    <strong>{details.firstName} {details.lastName}</strong>
+                  </Card.Text>
+                  <hr />
+                  <Card.Text className="mt-4">
+                    <strong>Contacts</strong>
+                  </Card.Text>
+                  <ul>
+                    <li>Email: {details.email}</li>
+                    <li>Mobile No: {details.mobileNo}</li>
+                  </ul>
+                  <div className="mt-4">
+                    <Button 
+                      variant="danger"
+                      style={{ borderRadius: 0 }}
+                      onClick={() => setShowResetPassword(true)}
+                    >
+                      Reset Password
+                    </Button>
+                  </div>
+                </>
+              )}
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
       <ResetPassword 
         show={showResetPassword} 
         onHide={() => setShowResetPassword(false)}
       />
-    </div>
+    </Container>
   );
 }

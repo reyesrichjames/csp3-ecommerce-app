@@ -138,119 +138,123 @@ export default function UserView({ productsData = [] }) {
   return (
     <Container className="mt-5">
       <style>{customAccordionStyles}</style>
-      <Accordion className="mb-4" style={accordionStyle}>
-        <Accordion.Item eventKey="0" className="border">
-          <Accordion.Header>
-            <span className="fw-bold">Product Search</span>
-          </Accordion.Header>
-          <Accordion.Body>
-            <Form className="compact-form">
-              {/* Product Name field */}
-              <Form.Group className="mb-2">
-                <Form.Label className="mb-1 small">Product Name:</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={productName}
-                  onChange={(e) => setProductName(e.target.value)}
-                  size="sm"
-                />
-              </Form.Group>
-              
-              {/* Search by Name button on a single line */}
-              <div className="mb-3">
-                <Button 
-                  variant="primary" 
-                  size="sm"
-                  onClick={handleSearchByName}
-                  style={searchButtonStyle}
-                >
-                  Search by Name
-                </Button>
-              </div>
-
-              {/* Price Range section - both fields side by side on the left */}
-              <div className="d-flex mb-3" style={{ maxWidth: '400px' }}>
-                <div className="me-3">
-                  <Form.Label className="mb-1 small">Min Price:</Form.Label>
-                  <div className="d-flex">
-                    <Button 
-                      style={{...priceButtonStyle, height: '31px'}}
-                      onClick={() => decrementPrice(setMinPrice, minPrice)}
-                      size="sm"
-                    >
-                      -
-                    </Button>
+      <Row>
+        <Col xs={12}>
+          <Accordion className="mb-4" style={accordionStyle}>
+            <Accordion.Item eventKey="0" className="border">
+              <Accordion.Header>
+                <span className="fw-bold">Product Search</span>
+              </Accordion.Header>
+              <Accordion.Body>
+                <Form className="compact-form">
+                  {/* Product Name field */}
+                  <Form.Group className="mb-2">
+                    <Form.Label className="mb-1 small">Product Name:</Form.Label>
                     <Form.Control
                       type="text"
-                      value={minPrice}
-                      onChange={(e) => handlePriceChange(setMinPrice, e.target.value)}
-                      style={{...priceInputStyle, height: '31px'}}
+                      value={productName}
+                      onChange={(e) => setProductName(e.target.value)}
                       size="sm"
                     />
+                  </Form.Group>
+                  
+                  {/* Search by Name button on a single line */}
+                  <div className="mb-3">
                     <Button 
-                      style={{...priceButtonStyle, height: '31px'}}
-                      onClick={() => incrementPrice(setMinPrice, minPrice)}
+                      variant="primary" 
                       size="sm"
+                      onClick={handleSearchByName}
+                      style={searchButtonStyle}
                     >
-                      +
+                      Search by Name
                     </Button>
                   </div>
-                </div>
-                
-                <div>
-                  <Form.Label className="mb-1 small">Max Price:</Form.Label>
-                  <div className="d-flex">
-                    <Button 
-                      style={{...priceButtonStyle, height: '31px'}}
-                      onClick={() => decrementPrice(setMaxPrice, maxPrice)}
-                      size="sm"
-                    >
-                      -
-                    </Button>
-                    <Form.Control
-                      type="text"
-                      value={maxPrice}
-                      onChange={(e) => handlePriceChange(setMaxPrice, e.target.value)}
-                      style={{...priceInputStyle, height: '31px'}}
-                      size="sm"
-                    />
-                    <Button 
-                      style={{...priceButtonStyle, height: '31px'}}
-                      onClick={() => incrementPrice(setMaxPrice, maxPrice)}
-                      size="sm"
-                    >
-                      +
-                    </Button>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Search by Price and Clear buttons */}
-              <div className="d-flex mt-2">
-                <Button 
-                  variant="primary" 
-                  size="sm"
-                  onClick={handleSearchByPrice}
-                  style={searchButtonStyle}
-                  className="me-2"
-                >
-                  Search by Price
-                </Button>
-                <Button 
-                  variant="danger" 
-                  size="sm"
-                  onClick={handleClear}
-                  style={searchButtonStyle}
-                >
-                  Clear
-                </Button>
-              </div>
-            </Form>
-          </Accordion.Body>
-        </Accordion.Item>
-      </Accordion>
 
-      <h2 className="text-center mb-4">Our Products</h2>
+                  {/* Price Range section - both fields side by side on the left */}
+                  <div className="d-flex mb-3" style={{ maxWidth: '400px' }}>
+                    <div className="me-3">
+                      <Form.Label className="mb-1 small">Min Price:</Form.Label>
+                      <div className="d-flex">
+                        <Button 
+                          style={{...priceButtonStyle, height: '31px'}}
+                          onClick={() => decrementPrice(setMinPrice, minPrice)}
+                          size="sm"
+                        >
+                          -
+                        </Button>
+                        <Form.Control
+                          type="text"
+                          value={minPrice}
+                          onChange={(e) => handlePriceChange(setMinPrice, e.target.value)}
+                          style={{...priceInputStyle, height: '31px'}}
+                          size="sm"
+                        />
+                        <Button 
+                          style={{...priceButtonStyle, height: '31px'}}
+                          onClick={() => incrementPrice(setMinPrice, minPrice)}
+                          size="sm"
+                        >
+                          +
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <Form.Label className="mb-1 small">Max Price:</Form.Label>
+                      <div className="d-flex">
+                        <Button 
+                          style={{...priceButtonStyle, height: '31px'}}
+                          onClick={() => decrementPrice(setMaxPrice, maxPrice)}
+                          size="sm"
+                        >
+                          -
+                        </Button>
+                        <Form.Control
+                          type="text"
+                          value={maxPrice}
+                          onChange={(e) => handlePriceChange(setMaxPrice, e.target.value)}
+                          style={{...priceInputStyle, height: '31px'}}
+                          size="sm"
+                        />
+                        <Button 
+                          style={{...priceButtonStyle, height: '31px'}}
+                          onClick={() => incrementPrice(setMaxPrice, maxPrice)}
+                          size="sm"
+                        >
+                          +
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Search by Price and Clear buttons */}
+                  <div className="d-flex mt-2">
+                    <Button 
+                      variant="primary" 
+                      size="sm"
+                      onClick={handleSearchByPrice}
+                      style={searchButtonStyle}
+                      className="me-2"
+                    >
+                      Search by Price
+                    </Button>
+                    <Button 
+                      variant="danger" 
+                      size="sm"
+                      onClick={handleClear}
+                      style={searchButtonStyle}
+                    >
+                      Clear
+                    </Button>
+                  </div>
+                </Form>
+              </Accordion.Body>
+            </Accordion.Item>
+          </Accordion>
+
+          <h2 className="text-center mb-4">Our Products</h2>
+        </Col>
+      </Row>
       
       <Row className="mt-4">
         {products.map(product => (

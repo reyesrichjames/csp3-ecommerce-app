@@ -129,7 +129,7 @@ const Register = () => {
     <Container className="mt-5">
       <h1 className="text-center mb-4">Register</h1>
       <div className="col-md-6 offset-md-3">
-        <Card className="p-4">
+        <Card className="p-4" style={{ borderRadius: 0 }}>
           <Form onSubmit={registerUser}>
             <Form.Group className="mb-3">
               <Form.Label>First Name:</Form.Label>
@@ -196,8 +196,8 @@ const Register = () => {
               marginRight: '-1.5rem', 
               marginBottom: '-1.5rem',
               borderTop: '1px solid #dee2e6',
-              borderBottomLeftRadius: 'calc(0.375rem - 1px)',
-              borderBottomRightRadius: 'calc(0.375rem - 1px)'
+              borderBottomLeftRadius: 0,
+              borderBottomRightRadius: 0
             }}>
               <button 
                 type="submit" 
@@ -208,7 +208,8 @@ const Register = () => {
                   paddingLeft: '15px',
                   paddingRight: '15px',
                   width: 'auto',
-                  display: 'inline-block'
+                  display: 'inline-block',
+                  borderRadius: 0
                 }}
               >
                 {isActive ? 'Register' : 'Please enter your registration details'}
