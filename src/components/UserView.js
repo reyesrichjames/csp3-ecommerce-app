@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Form, Button, Row, Col } from 'react-bootstrap';
+import { Container, Form, Button, Row, Col, Accordion } from 'react-bootstrap';
+import { useState, useEffect } from 'react';
 import ProductCard from './ProductCard';
 
 export default function UserView({ productsData = [] }) {
@@ -107,100 +107,127 @@ export default function UserView({ productsData = [] }) {
      borderRadius: 0
    };
 
+  // Updated accordion style with more top margin to accommodate navbar expansion
+  const accordionStyle = {
+    marginTop: '2rem',
+    marginBottom: '1.5rem',
+    transition: 'margin-top 0.3s ease'
+  };
+  
   return (
     <Container className="mt-5">
-      <h2 className="mb-4">Product Search</h2>
+      <Accordion className="mb-4" style={accordionStyle}>
+        <Accordion.Item eventKey="0" className="border">
+          <Accordion.Header className="py-2">
+            <span className="fw-bold">Product Search</span>
+          </Accordion.Header>
+          <Accordion.Body className="py-3 px-3">
+            <Form className="compact-form">
+              <Form.Group className="mb-2">
+                <Form.Label className="mb-1 small">Product Name:</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={productName}
+                  onChange={(e) => setProductName(e.target.value)}
+                  size="sm"
+                />
+              </Form.Group>
+
+              <Row className="mb-2">
+                <Col xs={6}>
+                  <Form.Group>
+                    <Form.Label className="mb-1 small">Min Price:</Form.Label>
+                    <div className="d-flex">
+                      <Button 
+                        style={{...priceButtonStyle, height: '31px'}}
+                        onClick={() => decrementPrice(setMinPrice, minPrice)}
+                        size="sm"
+                      >
+                        -
+                      </Button>
+                      <Form.Control
+                        type="text"
+                        value={minPrice}
+                        onChange={(e) => handlePriceChange(setMinPrice, e.target.value)}
+                        style={{...priceInputStyle, height: '31px'}}
+                        size="sm"
+                      />
+                      <Button 
+                        style={{...priceButtonStyle, height: '31px'}}
+                        onClick={() => incrementPrice(setMinPrice, minPrice)}
+                        size="sm"
+                      >
+                        +
+                      </Button>
+                    </div>
+                  </Form.Group>
+                </Col>
+                <Col xs={6}>
+                  <Form.Group>
+                    <Form.Label className="mb-1 small">Max Price:</Form.Label>
+                    <div className="d-flex">
+                      <Button 
+                        style={{...priceButtonStyle, height: '31px'}}
+                        onClick={() => decrementPrice(setMaxPrice, maxPrice)}
+                        size="sm"
+                      >
+                        -
+                      </Button>
+                      <Form.Control
+                        type="text"
+                        value={maxPrice}
+                        onChange={(e) => handlePriceChange(setMaxPrice, e.target.value)}
+                        style={{...priceInputStyle, height: '31px'}}
+                        size="sm"
+                      />
+                      <Button 
+                        style={{...priceButtonStyle, height: '31px'}}
+                        onClick={() => incrementPrice(setMaxPrice, maxPrice)}
+                        size="sm"
+                      >
+                        +
+                      </Button>
+                    </div>
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <div className="d-flex justify-content-between mt-3">
+                <Button 
+                  variant="primary" 
+                  size="sm"
+                  onClick={handleSearchByName}
+                  style={searchButtonStyle}
+                  className="me-1"
+                >
+                  Search by Name
+                </Button>
+                <Button 
+                  variant="primary" 
+                  size="sm"
+                  onClick={handleSearchByPrice}
+                  style={searchButtonStyle}
+                  className="me-1"
+                >
+                  Search by Price
+                </Button>
+                <Button 
+                  variant="danger" 
+                  size="sm"
+                  onClick={handleClear}
+                  style={searchButtonStyle}
+                >
+                  Clear
+                </Button>
+              </div>
+            </Form>
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
+
+      <h2 className="text-center mb-4">Our Products</h2>
       
-      <Form>
-        <Form.Group className="mb-3">
-          <Form.Label>Product Name:</Form.Label>
-          <Form.Control
-            type="text"
-            value={productName}
-            onChange={(e) => setProductName(e.target.value)}
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Minimum Price:</Form.Label>
-          <div className="d-flex">
-            <Button 
-              style={priceButtonStyle}
-              onClick={() => decrementPrice(setMinPrice, minPrice)}
-            >
-              -
-            </Button>
-            <Form.Control
-              type="text"
-              value={minPrice}
-              onChange={(e) => handlePriceChange(setMinPrice, e.target.value)}
-              style={priceInputStyle}
-            />
-            <Button 
-              style={priceButtonStyle}
-              onClick={() => incrementPrice(setMinPrice, minPrice)}
-            >
-              +
-            </Button>
-          </div>
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Maximum Price:</Form.Label>
-          <div className="d-flex">
-            <Button 
-              style={priceButtonStyle}
-              onClick={() => decrementPrice(setMaxPrice, maxPrice)}
-            >
-              -
-            </Button>
-            <Form.Control
-              type="text"
-              value={maxPrice}
-              onChange={(e) => handlePriceChange(setMaxPrice, e.target.value)}
-              style={priceInputStyle}
-            />
-            <Button 
-              style={priceButtonStyle}
-              onClick={() => incrementPrice(setMaxPrice, maxPrice)}
-            >
-              +
-            </Button>
-          </div>
-        </Form.Group>
-
-        <div className="mb-5">
-            <Button 
-              variant="primary" 
-              className="me-2" 
-              onClick={handleSearchByName}
-              style={searchButtonStyle}
-            >
-              Search by Name
-            </Button>
-            <Button 
-              variant="primary" 
-              className="me-2" 
-              onClick={handleSearchByPrice}
-              style={searchButtonStyle}
-            >
-              Search by Price
-            </Button>
-            <Button 
-              variant="danger" 
-              onClick={handleClear}
-              style={searchButtonStyle}
-            >
-              Clear
-            </Button>
-          </div>
-      </Form>
-
-      <hr />
-
-      <h2 className="text-center mb-5 my-5">Our Products</h2>
-      
-      <Row>
+      <Row className="mt-4">
         {products.map(product => (
           <Col xs={12} md={6} lg={4} key={product._id} className="mb-4">
             <ProductCard productProp={product} />

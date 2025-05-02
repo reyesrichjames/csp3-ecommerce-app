@@ -31,7 +31,8 @@ export default function AppNavbar() {
     position: 'relative',
     padding: '0',
     border: 'none',
-    background: 'transparent'
+    background: 'transparent',
+    boxShadow: 'none' // Remove shadow
   };
 
   const hamburgerLineStyle = {
@@ -54,6 +55,7 @@ export default function AppNavbar() {
         <Navbar.Toggle 
           aria-controls="basic-navbar-nav"
           style={hamburgerStyle}
+          className="shadow-none" // Add this class to ensure no shadow
         >
           <span style={{...hamburgerLineStyle, top: '25%'}}></span>
           <span style={{...hamburgerLineStyle, top: '50%', transform: 'translateY(-50%)'}}></span>
