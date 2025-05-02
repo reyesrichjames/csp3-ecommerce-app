@@ -434,7 +434,7 @@ export default function AdminDashboard({ productsData, fetchData }) {
               </div>
             ) : (
               <>
-                <Table bordered hover responsive style={tableStyles.table}>
+                <Table bordered responsive style={tableStyles.table}>
                   <thead>
                     <tr style={tableStyles.tableHeader}>
                       <th style={{width: '25%'}}>Name</th>
