@@ -114,8 +114,22 @@ export default function UserView({ productsData = [] }) {
     transition: 'margin-top 0.3s ease'
   };
   
+  // Custom styles to remove blue outline on accordion
+  const customAccordionStyles = `
+    .accordion-button:focus {
+      box-shadow: none !important;
+      border-color: rgba(0,0,0,.125) !important;
+    }
+    .accordion-button:not(.collapsed) {
+      color: #212529;
+      background-color: #f8f9fa;
+      box-shadow: none;
+    }
+  `;
+  
   return (
     <Container className="mt-5">
+      <style>{customAccordionStyles}</style>
       <Accordion className="mb-4" style={accordionStyle}>
         <Accordion.Item eventKey="0" className="border">
           <Accordion.Header className="py-2">
