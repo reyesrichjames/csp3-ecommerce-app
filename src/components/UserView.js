@@ -43,7 +43,9 @@ export default function UserView({ productsData = [] }) {
       }
 
       const data = await response.json();
-      setProducts(Array.isArray(data) ? data : []);
+      // Filter out inactive products
+      const activeProducts = Array.isArray(data) ? data.filter(product => product.isActive) : [];
+      setProducts(activeProducts);
     } catch (error) {
       console.error('Error searching products:', error);
       setProducts([]); // Reset to empty array on error
@@ -68,7 +70,9 @@ export default function UserView({ productsData = [] }) {
       }
       
       const data = await response.json();
-      setProducts(Array.isArray(data) ? data : []);
+      // Filter out inactive products
+      const activeProducts = Array.isArray(data) ? data.filter(product => product.isActive) : [];
+      setProducts(activeProducts);
     } catch (error) {
       console.error('Error searching by price:', error);
       setProducts([]); // Reset to empty array on error
