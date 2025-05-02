@@ -300,8 +300,6 @@ export default function AdminDashboard({ productsData, fetchData }) {
             return;
           }
 
-          // Removed the postimg.cc validation
-
           try {
             const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/products/${productToUpdate._id}/update`, {
               method: 'PATCH',
@@ -319,7 +317,7 @@ export default function AdminDashboard({ productsData, fetchData }) {
 
             const data = await response.json();
             if (response.ok) {
-              // Update the local state immediately
+              // Update the local state immediately with all fields including imageUrl
               setProducts(products.map(product => 
                 product._id === productToUpdate._id 
                   ? {
@@ -334,8 +332,7 @@ export default function AdminDashboard({ productsData, fetchData }) {
               
               notyf.success('Product updated successfully');
               handleUpdateClose();
-              // Still fetch from server to ensure consistency
-              fetchData();
+              // No need to fetch data again as we've already updated the state
             } else {
               notyf.error(data.message || 'Failed to update product');
             }
