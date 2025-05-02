@@ -395,8 +395,12 @@ export default function AdminDashboard({ productsData, fetchData }) {
                 {Object.entries(allOrders).map(([userEmail, userOrders]) => (
                   <Card key={userEmail} className="mb-3">
                     <Card.Header
-                      className="bg-dark text-white"
-                      style={{ cursor: 'pointer' }}
+                      className="text-white"
+                      style={{ 
+                        backgroundColor: '#373a3c', 
+                        cursor: 'pointer',
+                        borderRadius: 0
+                      }}
                       onClick={() => toggleUserOrders(userEmail)}
                     >
                       Orders for: {userEmail}

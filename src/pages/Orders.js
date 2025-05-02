@@ -95,52 +95,65 @@ export default function Orders() {
 
   return (
     <Container className="mt-5">
-      <h2 className="text-center mb-4">Order History</h2>
-      {orders.map((order, index) => (
-        <Card key={order._id} className="mb-4" style={{ borderRadius: 0 }}>
-          <Card.Header 
-            className="bg-dark text-white" 
-            style={{ cursor: 'pointer', borderRadius: 0 }}
-            onClick={() => toggleOrderDetails(order._id)}
-          >
-            Order #{index + 1} - Purchased on: {formatDate(order.orderedOn)} (Click for Details)
-          </Card.Header>
-          <Card.Body>
-            <div className="mb-2">Items:</div>
-            <ul style={{ listStyleType: 'circle', paddingLeft: '20px' }}>
-              {order.productsOrdered.map((product) => (
-                <li key={product._id}>
-                  <Link 
-                    to={`/products/${product.productId}`}
-                    style={{ 
-                      color: '#0d6efd',
-                      textDecoration: 'underline',
-                      marginBottom: '8px',
-                      display: 'inline-block',
-                      borderRadius: 0
-                    }}
-                  >
-                    {products[product.productId]?.name || 'Loading...'}
-                  </Link>
-                  <span style={{ color: '#666' }}> - Quantity: {product.quantity}</span>
-                  
-                  <Collapse in={expandedOrders[order._id]}>
-                    <div className="mt-2 mb-3 ps-3">
-                      <div style={{ color: '#666' }}>
-                        Price: ₱{products[product.productId]?.price || '...'}<br/>
-                        Description: {products[product.productId]?.description || 'Loading...'}
-                      </div>
-                    </div>
-                  </Collapse>
-                </li>
-              ))}
-            </ul>
-            <div style={{ marginTop: '15px', color: '#ff6b6b' }}>
-              Total: ₱{order.totalPrice}
-            </div>
-          </Card.Body>
-        </Card>
-      ))}
+      <div className="card" style={{ borderRadius: '0' }}>
+        <div 
+          className="card-header text-center text-white py-2" 
+          style={{ backgroundColor: '#373a3c', borderRadius: '0' }}
+        >
+          <h4 className="mb-0" style={{ fontSize: '1.5rem' }}>Order History</h4>
+        </div>
+        <div className="card-body">
+          {orders.map((order, index) => (
+            <Card key={order._id} className="mb-4" style={{ borderRadius: 0 }}>
+              <Card.Header 
+                className="text-white" 
+                style={{ 
+                  backgroundColor: '#373a3c', 
+                  cursor: 'pointer', 
+                  borderRadius: 0 
+                }}
+                onClick={() => toggleOrderDetails(order._id)}
+              >
+                Order #{index + 1} - Purchased on: {formatDate(order.orderedOn)} (Click for Details)
+              </Card.Header>
+              <Card.Body>
+                <div className="mb-2">Items:</div>
+                <ul style={{ listStyleType: 'circle', paddingLeft: '20px' }}>
+                  {order.productsOrdered.map((product) => (
+                    <li key={product._id}>
+                      <Link 
+                        to={`/products/${product.productId}`}
+                        style={{ 
+                          color: '#0d6efd',
+                          textDecoration: 'underline',
+                          marginBottom: '8px',
+                          display: 'inline-block',
+                          borderRadius: 0
+                        }}
+                      >
+                        {products[product.productId]?.name || 'Loading...'}
+                      </Link>
+                      <span style={{ color: '#666' }}> - Quantity: {product.quantity}</span>
+                      
+                      <Collapse in={expandedOrders[order._id]}>
+                        <div className="mt-2 mb-3 ps-3">
+                          <div style={{ color: '#666' }}>
+                            Price: ₱{products[product.productId]?.price || '...'}<br/>
+                            Description: {products[product.productId]?.description || 'Loading...'}
+                          </div>
+                        </div>
+                      </Collapse>
+                    </li>
+                  ))}
+                </ul>
+                <div style={{ marginTop: '15px', color: '#ff6b6b' }}>
+                  Total: ₱{order.totalPrice}
+                </div>
+              </Card.Body>
+            </Card>
+          ))}
+        </div>
+      </div>
     </Container>
   );
 }
