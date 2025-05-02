@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Table, Button, Card } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Notyf } from 'notyf';
 
 export default function Cart() {
@@ -8,8 +8,7 @@ export default function Cart() {
   const [products, setProducts] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const notyf = new Notyf();
-
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchCart();
@@ -196,6 +195,8 @@ export default function Cart() {
                  cartItems: [],
                  totalPrice: 0
                }));
+               // Redirect to orders page
+               navigate('/orders');
              } else {
                notyf.error(data.message || 'Failed to place order');
              }
@@ -372,12 +373,12 @@ export default function Cart() {
           </div>
         </div>
         <div className="card-footer" style={{ backgroundColor: '#f8f9fa', borderRadius: '0' }}>
-          <div className="d-flex justify-content-between align-items-center">
+          <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
             <h3 style={{ color: '#FF6B00' }}>Total: ₱{cart.totalPrice}</h3>
-            <div>
+            <div className="d-flex flex-column d-md-block mt-3 mt-md-0">
               <Button
                 variant="primary"
-                className="me-2"
+                className="me-md-2 mb-2 mb-md-0"
                 style={{ borderRadius: 0 }}
                 onClick={handleCheckout}
               >

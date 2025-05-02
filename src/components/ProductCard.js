@@ -15,31 +15,29 @@ export default function ProductCard({ productProp }) {
           className="mb-3 h-100 d-flex flex-column mx-3"
           style={{ borderRadius: '0' }}
         >
-          {imageUrl && (
-            <div style={{ 
-              display: 'flex', 
-              justifyContent: 'center',
-              alignItems: 'center',
-              margin: '10px 0',
-              width: '100%',
-              height: '200px'
-            }}>
-              <img 
-                src={imageUrl}
-                alt={name}
-                style={{
-                  maxWidth: '100%',
-                  maxHeight: '100%',
-                  objectFit: 'contain',
-                  backgroundColor: 'white'
-                }}
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.style.display = 'none';
-                }}
-              />
-            </div>
-          )}
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center',
+            alignItems: 'center',
+            margin: '10px 0',
+            width: '100%',
+            height: '200px'
+          }}>
+            <img 
+              src={imageUrl || "https://dn721803.ca.archive.org/0/items/placeholder-image//placeholder-image.jpg"}
+              alt={name}
+              style={{
+                maxWidth: '100%',
+                maxHeight: '100%',
+                objectFit: 'contain',
+                backgroundColor: 'white'
+              }}
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "https://dn721803.ca.archive.org/0/items/placeholder-image//placeholder-image.jpg";
+              }}
+            />
+          </div>
           <Card.Body className="flex-grow-1">    
         <Card.Title>
           <Link 

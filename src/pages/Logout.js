@@ -12,6 +12,6 @@ export default function Logout() {
     isAdmin: null
   });
 
-  // Directly navigate to the courses page
-  return <Navigate to="/products" />;
+  // Redirect to the login page instead of products
+  return <Navigate to="/login" />;
 }

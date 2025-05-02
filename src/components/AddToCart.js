@@ -1,9 +1,11 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import { Notyf } from 'notyf';
+import { useNavigate } from 'react-router-dom';
 
 export default function AddToCart({ productId, quantity, price }) {
   const notyf = new Notyf();
+  const navigate = useNavigate();
 
   const handleAddToCart = async () => {
     try {
@@ -26,6 +28,8 @@ export default function AddToCart({ productId, quantity, price }) {
 
       if (response.ok) {
         notyf.success('Added to Cart.');
+        // Redirect to products page after successful addition
+        navigate('/products');
       } else {
         notyf.error(data.message || 'Failed to add item to cart');
       }

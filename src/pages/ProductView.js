@@ -92,28 +92,42 @@ export default function ProductView() {
           </div>
           <div className="card-body">
             {/* Mobile and Tablet View Image (shown only on sm and md screens) */}
-            {product.imageUrl && (
-              <div className="d-block d-lg-none mb-4" style={{ 
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '100%',
-                height: '200px'  // Reduced from 300px to 200px
-              }}>
-                <a 
-                  href={`https://postimg.cc/${product.imageUrl.split('/').find(segment => segment.length > 7)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                  }}
-                >
+            <div className="d-block d-lg-none mb-4" style={{ 
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%',
+              height: '200px'
+            }}>
+              <img
+                src={product.imageUrl || "https://dn721803.ca.archive.org/0/items/placeholder-image//placeholder-image.jpg"}
+                alt={product.name}
+                style={{
+                  maxWidth: '100%',
+                  maxHeight: '100%',
+                  objectFit: 'contain',
+                  backgroundColor: 'white'
+                }}
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "https://dn721803.ca.archive.org/0/items/placeholder-image//placeholder-image.jpg";
+                }}
+              />
+            </div>
+
+            {/* Desktop View Layout */}
+            <div className="row">
+              {/* Desktop Image (shown only on lg screens and up) */}
+              <div className="col-lg-4 d-none d-lg-block">
+                <div style={{ 
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: '100%',
+                  height: '250px'
+                }}>
                   <img
-                    src={product.imageUrl}
+                    src={product.imageUrl || "https://dn721803.ca.archive.org/0/items/placeholder-image//placeholder-image.jpg"}
                     alt={product.name}
                     style={{
                       maxWidth: '100%',
@@ -123,55 +137,11 @@ export default function ProductView() {
                     }}
                     onError={(e) => {
                       e.target.onerror = null;
-                      e.target.style.display = 'none';
+                      e.target.src = "https://dn721803.ca.archive.org/0/items/placeholder-image//placeholder-image.jpg";
                     }}
                   />
-                </a>
-              </div>
-            )}
-
-            {/* Desktop View Layout */}
-            <div className="row">
-              {/* Desktop Image (shown only on lg screens and up) */}
-              {product.imageUrl && (
-                <div className="col-lg-4 d-none d-lg-block"> {/* Changed from col-lg-6 to col-lg-4 */}
-                  <div style={{ 
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    width: '100%',
-                    height: '250px'  // Reduced from 400px to 250px
-                  }}>
-                    <a 
-                      href={`https://postimg.cc/${product.imageUrl.split('/').find(segment => segment.length > 7)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
-                    >
-                      <img
-                        src={product.imageUrl}
-                        alt={product.name}
-                        style={{
-                          maxWidth: '100%',
-                          maxHeight: '100%',
-                          objectFit: 'contain',
-                          backgroundColor: 'white'
-                        }}
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.style.display = 'none';
-                        }}
-                      />
-                    </a>
-                  </div>
                 </div>
-              )}
+              </div>
 
               {/* Product Details */}
               <div className={`${product.imageUrl ? 'col-lg-8' : 'col-12'}`}> {/* Changed from col-lg-6 to col-lg-8 */}

@@ -229,8 +229,8 @@ export default function AdminDashboard({ productsData, fetchData }) {
            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
          },
          tableHeader: {
-           backgroundColor: '#f8f9fa',
-           color: '#333',
+           backgroundColor: '#373a3c',
+           color: '#fff',
            fontWeight: '600'
          },
          actionButton: {
@@ -434,7 +434,7 @@ export default function AdminDashboard({ productsData, fetchData }) {
               </div>
             ) : (
               <>
-                <Table striped bordered hover responsive style={tableStyles.table}>
+                <Table bordered hover responsive style={tableStyles.table}>
                   <thead>
                     <tr style={tableStyles.tableHeader}>
                       <th style={{width: '25%'}}>Name</th>
@@ -452,26 +452,45 @@ export default function AdminDashboard({ productsData, fetchData }) {
                         <td>
                           {product.name}
 
-                          {product.imageUrl && (
+                          {product.imageUrl ? (
                             <div style={{ 
                               display: 'flex', 
                               justifyContent: 'center', 
                               margin: '10px 0',
-                              width: '100%' // Match parent width
+                              width: '100%'
                             }}>
                               <img 
                                 src={product.imageUrl}
                                 alt={product.name}
                                 style={{
-                                  width: '100%', // Take full width of parent
-                                  height: 'auto', // Maintain aspect ratio
-                                  maxHeight: '200px', // Maximum height
-                                  objectFit: 'contain', // Ensure whole image is visible
+                                  width: '100%',
+                                  height: 'auto',
+                                  maxHeight: '200px',
+                                  objectFit: 'contain',
                                   backgroundColor: 'white'
                                 }}
                                 onError={(e) => {
-                                  e.target.onerror = null; // Prevent infinite loop
-                                  e.target.style.display = 'none'; // Hide broken images
+                                  e.target.onerror = null;
+                                  e.target.src = "https://dn721803.ca.archive.org/0/items/placeholder-image//placeholder-image.jpg";
+                                }}
+                              />
+                            </div>
+                          ) : (
+                            <div style={{ 
+                              display: 'flex', 
+                              justifyContent: 'center', 
+                              margin: '10px 0',
+                              width: '100%'
+                            }}>
+                              <img 
+                                src="https://dn721803.ca.archive.org/0/items/placeholder-image//placeholder-image.jpg"
+                                alt="Product placeholder"
+                                style={{
+                                  width: '100%',
+                                  height: 'auto',
+                                  maxHeight: '200px',
+                                  objectFit: 'contain',
+                                  backgroundColor: 'white'
                                 }}
                               />
                             </div>
