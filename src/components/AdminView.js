@@ -436,14 +436,14 @@ export default function AdminDashboard({ productsData, fetchData }) {
               <>
                 <Table bordered responsive style={tableStyles.table}>
                   <thead>
-                    <tr style={tableStyles.tableHeader}>
-                      <th style={{width: '25%'}}>Name</th>
-                      <th className="d-none d-lg-table-cell" style={{width: '45%'}}>Description</th>
+                    <tr>
+                      <th style={{width: '25%', backgroundColor: '#373a3c', color: '#fff'}}>Name</th>
+                      <th className="d-none d-lg-table-cell" style={{width: '45%', backgroundColor: '#373a3c', color: '#fff'}}>Description</th>
                       {/* Remove the View header for tablet view */}
-                      <th className="d-lg-none d-sm-none" style={{width: '15%', textAlign: 'center'}}>View</th>
-                      <th style={{width: '25%', textAlign: 'center'}}>Price</th>
-                      <th className="d-none d-sm-table-cell" style={{width: '25%', textAlign: 'center'}}>Availability</th>
-                      <th className="d-none d-sm-table-cell" style={{width: '25%', textAlign: 'center'}}>Actions</th>
+                      <th className="d-lg-none d-sm-none" style={{width: '15%', textAlign: 'center', backgroundColor: '#373a3c', color: '#fff'}}>View</th>
+                      <th style={{width: '25%', textAlign: 'center', backgroundColor: '#373a3c', color: '#fff'}}>Price</th>
+                      <th className="d-none d-sm-table-cell" style={{width: '25%', textAlign: 'center', backgroundColor: '#373a3c', color: '#fff'}}>Availability</th>
+                      <th className="d-none d-sm-table-cell" style={{width: '25%', textAlign: 'center', backgroundColor: '#373a3c', color: '#fff'}}>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
