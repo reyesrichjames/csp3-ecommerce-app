@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef } from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 
 export default function AppNavbar() {
   const { user, setUser } = useContext(UserContext);
+  const navbarToggleRef = useRef(null);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -12,6 +13,14 @@ export default function AppNavbar() {
       id: null,
       isAdmin: false
     });
+  };
+
+  // Function to close navbar when a link is clicked
+  const closeNavbar = () => {
+    // Bootstrap lg breakpoint is 992px, so this covers both mobile and tablet
+    if (window.innerWidth < 992 && navbarToggleRef.current && navbarToggleRef.current.classList.contains('collapsed') === false) {
+      navbarToggleRef.current.click();
+    }
   };
 
   const navbarStyle = {
@@ -48,14 +57,15 @@ export default function AppNavbar() {
   return (
     <Navbar expand="lg" style={navbarStyle} variant="dark">
       <Container fluid>
-        <Navbar.Brand as={NavLink} to="/" style={linkStyle}>
+        <Navbar.Brand as={NavLink} to="/" style={linkStyle} onClick={closeNavbar}>
           The Zuitt Shop
         </Navbar.Brand>
         
         <Navbar.Toggle 
+          ref={navbarToggleRef}
           aria-controls="basic-navbar-nav"
           style={hamburgerStyle}
-          className="shadow-none" // Add this class to ensure no shadow
+          className="shadow-none"
         >
           <span style={{...hamburgerLineStyle, top: '25%'}}></span>
           <span style={{...hamburgerLineStyle, top: '50%', transform: 'translateY(-50%)'}}></span>
@@ -65,11 +75,11 @@ export default function AppNavbar() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             {user && user.isAdmin ? (
-              <Nav.Link as={NavLink} to="/products" style={linkStyle}>
+              <Nav.Link as={NavLink} to="/products" style={linkStyle} onClick={closeNavbar}>
                 Admin Dashboard
               </Nav.Link>
             ) : (
-              <Nav.Link as={NavLink} to="/products" style={linkStyle}>
+              <Nav.Link as={NavLink} to="/products" style={linkStyle} onClick={closeNavbar}>
                 Products
               </Nav.Link>
             )}
@@ -80,15 +90,18 @@ export default function AppNavbar() {
               <>
                 {!user.isAdmin && (
                   <>
-                    <Nav.Link as={NavLink} to="/cart" style={linkStyle}>Cart</Nav.Link>
-                    <Nav.Link as={NavLink} to="/orders" style={linkStyle}>Orders</Nav.Link>
-                    <Nav.Link as={NavLink} to="/profile" style={linkStyle}>Profile</Nav.Link>
+                    <Nav.Link as={NavLink} to="/cart" style={linkStyle} onClick={closeNavbar}>Cart</Nav.Link>
+                    <Nav.Link as={NavLink} to="/orders" style={linkStyle} onClick={closeNavbar}>Orders</Nav.Link>
+                    <Nav.Link as={NavLink} to="/profile" style={linkStyle} onClick={closeNavbar}>Profile</Nav.Link>
                   </>
                 )}
                 <Nav.Link 
                   as={NavLink} 
                   to="/logout" 
-                  onClick={handleLogout} 
+                  onClick={(e) => {
+                    closeNavbar();
+                    handleLogout();
+                  }} 
                   style={linkStyle}
                 >
                   Log Out
@@ -96,8 +109,8 @@ export default function AppNavbar() {
               </>
             ) : (
               <>
-                <Nav.Link as={NavLink} to="/login" style={linkStyle}>Log In</Nav.Link>
-                <Nav.Link as={NavLink} to="/register" style={linkStyle}>Register</Nav.Link>
+                <Nav.Link as={NavLink} to="/login" style={linkStyle} onClick={closeNavbar}>Log In</Nav.Link>
+                <Nav.Link as={NavLink} to="/register" style={linkStyle} onClick={closeNavbar}>Register</Nav.Link>
               </>
             )}
           </Nav>
